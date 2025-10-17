@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwasthyaSetu Chatbot - Your Health Assistant</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
     <style>
         :root {
             /* Health/Medical Theme Colors */
@@ -416,7 +412,25 @@
             align-items: center;
             justify-content: center;
         }
+
+        .input-action-btn#micBtn.recording {
+            color: var(--primary-color); /* Red color while listening */
+            box-shadow: 0 0 0 5px rgba(229, 57, 53, 0.3); /* Subtle pulsate effect */
+            animation: pulse-mic 1s infinite;
+        }
         
+        @keyframes pulse-mic {
+            0% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+            }
+        }
+
         .input-action-btn:hover {
             background-color: rgba(0, 0, 0, 0.05);
             color: var(--primary-color);
@@ -569,7 +583,6 @@
 </head>
 <body>
     <div class="chat-container">
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">
@@ -635,7 +648,6 @@
             </div>
         </div>
         
-        <!-- Main Chat Area -->
         <div class="main-chat">
             <div class="chat-header">
                 <button class="mobile-menu-toggle" id="mobileMenuOpen">
@@ -658,7 +670,6 @@
             </div>
             
             <div class="messages-container" id="messagesContainer">
-                <!-- Welcome Message -->
                 <div class="message bot">
                     <div class="message-content">
                         <p class="message-text">Hello! I'm your SwasthyaSetu Health Assistant. How can I help you today?</p>
@@ -683,7 +694,6 @@
                     </button>
                 </div>
                 
-                <!-- Health Suggestions -->
                 <div class="health-suggestions">
                     <div class="health-suggestion" data-message="I have a headache">Headache</div>
                     <div class="health-suggestion" data-message="What to eat for fever?">Fever</div>
@@ -695,7 +705,6 @@
         </div>
     </div>
 
-    <!-- Language Selector Modal -->
     <div class="modal fade" id="languageModal" tabindex="-1" aria-labelledby="languageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -731,10 +740,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
@@ -754,11 +761,98 @@
             const languageModal = new bootstrap.Modal(document.getElementById('languageModal'));
             const languageOptions = document.querySelectorAll('.language-option');
             const menuItems = document.querySelectorAll('.menu-item');
-            
+
             // State variables
             let isRecording = false;
-            let currentLanguage = 'en';
-            
+            let currentLanguage = 'en'; // Default language
+
+            // --- SPEECH RECOGNITION SETUP (FIXED) ---
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition = null;
+            let recognitionActive = false; // New state variable to track if recognition is running
+
+            // Map chat language codes to BCP-47 codes (essential for regional recognition)
+            const languageMap = {
+                'en': 'en-IN',
+                'hi': 'hi-IN',
+                'ta': 'ta-IN',
+                'te': 'te-IN',
+                'bn': 'bn-IN',
+                'mr': 'mr-IN'
+            };
+
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false; // Recognizes a single phrase then stops
+                recognition.interimResults = false; // Only returns final, confirmed results
+
+                recognition.onstart = function() {
+                    console.log('Voice recognition started. Speak now...');
+                    micBtn.classList.add('recording');
+                    isRecording = true;
+                    recognitionActive = true;
+                    chatInput.placeholder = 'Listening... Speak your question now.';
+                    sendBtn.disabled = true; // Disable send button while listening
+                };
+
+                recognition.onresult = function(event) {
+                    // Get the transcribed text from the final result
+                    const transcript = event.results[event.results.length - 1][0].transcript;
+                    chatInput.value = transcript;
+                    // Automatically send the message after successful transcription
+                    sendMessage();
+                };
+
+                recognition.onend = function() {
+                    console.log('Voice recognition stopped.');
+                    micBtn.classList.remove('recording');
+                    isRecording = false;
+                    recognitionActive = false;
+                    chatInput.placeholder = 'Message Health Assistant...';
+                    sendBtn.disabled = false; // Re-enable send button
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    micBtn.classList.remove('recording');
+                    isRecording = false;
+                    recognitionActive = false;
+                    sendBtn.disabled = false;
+                    chatInput.placeholder = 'Error or no speech detected. Try again.';
+                    addMessage(`Error: Could not capture voice. Please check microphone permissions or try typing. (${event.error})`);
+                };
+
+                // Mic button click handler to start/stop recognition
+                micBtn.addEventListener('click', function() {
+                    if (isRecording) {
+                        // FIX: Stop recognition if it is currently recording
+                        recognition.stop();
+                    } else {
+                        try {
+                            const selectedLangCode = languageMap[currentLanguage] || 'en-IN';
+                            recognition.lang = selectedLangCode;
+                            recognition.start();
+                        } catch (e) {
+                            console.error("Error starting recognition:", e);
+                            addMessage("Error: Could not start voice recognition. Please ensure your device supports the Web Speech API and you have granted permission.");
+                            micBtn.classList.remove('recording');
+                            isRecording = false;
+                            sendBtn.disabled = false;
+                        }
+                    }
+                });
+
+            } else {
+                // Fallback for non-supported browsers
+                micBtn.disabled = true;
+                micBtn.title = "Voice input not supported in this browser.";
+                micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                console.warn('Web Speech API (SpeechRecognition) is not supported in this browser.');
+                micBtn.addEventListener('click', function() {
+                    alert("Voice input is not supported in your browser. Please type your message.");
+                });
+            }
+
             // Bot responses based on language
             const botResponses = {
                 en: {
@@ -770,28 +864,28 @@
                     default: "I'm here to help with your health questions. You can ask me about symptoms, home remedies, or general health information. If you need immediate medical attention, please contact your local healthcare provider."
                 },
                 hi: {
-                    headache: "मुझे आपके सिरदर्द के बारे में खेद है। हल्के सिरदर्द के लिए, एक शांत, अंधेरे कमरे में आराम करने की कोशिश करें। आप अपने माथे पर ठंडे कपड़े भी लगा सकते हैं। हाइड्रेटेड रहें और चमकीली रोशनी से बचें। यदि आपका सिरदर्द एक दिन से अधिक समय तक बना रहे या गंभीर है, तो कृपया डॉक्टर से परामर्श करें।",
-                    fever: "बुखार के लिए, हाइड्रेटेड रहना महत्वपूर्ण है। पानी, जड़ी चाय और साफ सूप जैसे तरल पदार्थ पर्याप्त मात्रा में पिएं। रिकवरी के लिए आराम महत्वपूर्ण है। आप तुलसी के पत्ते या धनिया की चाय जैसे घरेलू उपचार आजमा सकते हैं। यदि आपका तापमान 102°F (39°C) से अधिक है या तीन दिनों से अधिक समय तक बना रहा है, तो चिकित्सा सहायता लें।",
+                    headache: "मुझे आपके सिरदर्द के बारे में खेद है। हल्के सिरदर्द के लिए, एक शांत, अंधेरे कमरे में आराम करने की कोशिश करें। आप अपने माथे पर ठंडे कपड़े भी लगा सकते हैं। हाइड्रेटेड रहें और चमकीली रोशनी से बचें। यदि आपका सिरदर्द एक दिन से अधिक समय तक बना रहे या गंभीर है, तो कृपया डॉक्टर से परामर्श करें।",
+                    fever: "बुखार के लिए, हाइड्रेटेड रहना महत्वपूर्ण है। पानी, जड़ी चाय और साफ सूप जैसे तरल पदार्थ पर्याप्त मात्रा में पिएं। रिकवरी के लिए आराम महत्वपूर्ण है। आप तुलसी के पत्ते या धनिया की चाय जैसे घरेलू उपचार आजमा सकते हैं। यदि आपका तापमान 102°F (39°C) से अधिक है या तीन दिनों से अधिक समय तक बना रहा है, तो चिकित्सा सहायता लें।",
                     cough: "खांसी के लिए, गर्म शहद और नींबू की चाय पीने की कोशिश करें। अदरक की चाय भी आपके गले को शांत करने में मदद कर सकती है। ठंडे खाद्य पदार्थों और पेय पदार्थों से बचें। यूकेलिप्टस तेल के साथ भाप लेने से राहत मिल सकती है। यदि आपकी खांसी एक सप्ताह से अधिक समय तक बनी रहती है या सांस लेने में कठिनाई के साथ है, तो डॉक्टर से परामर्श करें।",
                     hospitals: "मैं आपके आस-पास के अस्पताल ढूंढ़ने में आपकी मदद कर सकता हूं। क्या आप कृपया अपना वर्तमान स्थान साझा कर सकते हैं? वैकल्पिक रूप से, आप अपने क्षेत्र में अस्पताल देखने के लिए हमारी मुख्य वेबसाइट पर 'निकटतम अस्पताल' अनुभाग पर जा सकते हैं।",
                     doctor: "मैं आपको परामर्श के लिए एक डॉक्टर से जोड़ सकता हूं। क्या आप चाहेंगे कि मैं आपके क्षेत्र में उपलब्ध डॉक्टरों को खोजूं? कृपया मुझे अपना स्थान और उस विशेषज्ञ के प्रकार बताएं जिसे आप ढूंढ रहे हैं।",
                     default: "मैं आपके स्वास्थ्य प्रश्नों में मदद करने के लिए यहां हूं। आप मुझसे लक्षणों, घरेलू उपचारों, या सामान्य स्वास्थ्य जानकारी के बारे में पूछ सकते हैं। यदि आपको तत्काल चिकित्सा ध्यान की आवश्यकता है, तो कृपया अपने स्थानीय स्वास्थ्य सेवा प्रदाता से संपर्क करें।"
                 },
                 ta: {
-                    headache: "தலவலி இருப்பதற்கு எனக்கு வருத்தமாக உள்ளது. இலகுவான தலவலிக்கு, அமைதியான, இருண்ட அறையில் ஓய்வெடுக்க முயற்சிக்கவும். நீங்கள் உங்கள் நெற்றியில் குளிர்ந்த துணியையும் பயன்படுத்தலாம். நீர்ப்பெருக்கு கவனம் செலுத்துங்கள் மற்றும் பிரகாசமான ஒளியிலிருந்து விலகவும். உங்கள் தலவலி ஒரு நாளுக்கு மேல் நீடிக்குமானாலோ அல்லது கடுமையாக இருந்தாலோ, தயவுசெய்து மருத்துவரைக் கலந்து ஆலோசிக்கவும்.",
-                    fever: "காய்ச்சலுக்கு, நீர்ப்பெருக்கு இருப்பது முக்கியம். தண்ணீர், மூலிகை தேநீர் மற்றும் சூப்புகள் போன்ற திரவங்களை அதிக அளவில் குடிக்கவும். மீட்பைப் பெற ஓய்வு முக்கியம். துளசி இலைகள் அல்லது கொத்தமல்லி தேநீர் போன்ற வீட்டு வைத்தியங்களை நீங்கள் முயற்சிக்கலாம். உங்கள் வெப்பநிலை 102°F (39°C) க்கு மேல் இருந்தாலோ அல்லது மூன்று நாட்களுக்கு மேல் நீடித்திருந்தாலோ, மருத்துவ கவனிப்பைத் தேடுங்கள்.",
-                    cough: "இருமலுக்கு, வெந்ததேன் மற்றும் எலுமிச்சை தேநீர் குடிக்க முயற்சிக்கவும். இஞ்சி தேநீரும் உங்கள் தொண்டையை சமாதானப்படுத்த உதவும். குளிர்ந்த உணவுகள் மற்றும் பானங்களைத் தவிர்க்கவும். யூகலிப்டஸ் எண்ணெயுடன் நீராவிப் பதனம் நிவாரணி அளிக்கும். உங்கள் இருமல் ஒரு வாரத்திற்கு மேல் நீடித்தாலோ அல்லது சுவாசிப்பதில் சிரமத்துடன் இருந்தாலோ, மருத்துவரைக் கலந்து ஆலோசிக்கவும்.",
-                    hospitals: "உங்களுக்கு அருகிலுள்ள மருத்துவமனைகளைக் கண்டுபிடிக்க நான் உதவலாம். தயவுசெய்து உங்கள் தற்போதைய இருப்பிடத்தைப் பகிர்ந்து கொள்ள முடியுமா? மாற்றாக, உங்கள் பகுதியில் உள்ள மருத்துவமனைகளைப் பார்க்க நாங்களின் முக்கிய இணையதளத்தில் 'அருகிலுள்ள மருத்துவமனைகள்' பகுதிக்குச் செல்லலாம்.",
-                    doctor: "ஆலோசனைக்கு மருத்துவருடன் இணைக்க நான் உதவலாம். உங்கள் பகுதியில் கிடைக்கும் மருத்துவர்களைக் கண்டுபிடிக்க என்னை விரும்புகிறீர்களா? தயவுசெய்து உங்கள் இருப்பிடத்தையும் நீங்கள் தேடும் நிபுணத்துவ வகையையும் எனக்குத் தெரிவிக்கவும்.",
-                    default: "உங்கள் சுகாதார கேள்விகளுக்கு உதவ நான் இங்கே இருக்கிறேன். நீங்கள் என்னிடம் அறிகுறிகள், வீட்டு வைத்தியங்கள் அல்லது பொது சுகாதார தகவல்கள் பற்றி கேட்கலாம். உங்களுக்கு உடனடி மருத்துவ கவனிப்பு தேவைப்பட்டால், தயவுசெய்து உங்கள் உள்ளூர் சுகாதார சேவை வழங்குநரைத் தொடர்பு கொள்ளுங்கள்."
+                    headache: "தலவலி இருப்பதற்கு எனக்கு வருத்தமாக உள்ளது. இலகுவான தலவலிக்கு, அமைதியான, இருண்ட அறையில் ஓய்வெடுக்க முயற்சிக்கவும். நீங்கள் உங்கள் நெற்றியில் குளிர்ந்த துணியையும் பயன்படுத்தலாம். நீர்ப்பெருக்கு கவனம் செலுத்துங்கள் மற்றும் பிரகாசமான ஒளியிலிருந்து விலகவும். உங்கள் தலவலி ஒரு நாளுக்கு மேல் நீடிக்குமானாலோ அல்லது கடுமையாக இருந்தாலோ, தயவுசெய்து மருத்துவரைக் கலந்து ஆலோசிக்கவும்。",
+                    fever: "காய்ச்சலுக்கு, நீர்ப்பெருக்கு இருப்பது முக்கியம். தண்ணீர், மூலிகை தேநீர் மற்றும் சூப்புகள் போன்ற திரவங்களை அதிக அளவில் குடிக்கவும். மீட்பைப் பெற ஓய்வு முக்கியம். துளசி இலைகள் அல்லது கொத்தமல்லி தேநீர் போன்ற வீட்டு வைத்தியங்களை நீங்கள் முயற்சிக்கலாம். உங்கள் வெப்பநிலை 102°F (39°C) க்கு மேல் இருந்தாலோ அல்லது மூன்று நாட்களுக்கு மேல் நீடித்திருந்தாலோ, மருத்துவ கவனிப்பைத் தேடுங்கள்。",
+                    cough: "இருமலுக்கு, வெந்ததேன் மற்றும் எலுமிச்சை தேநீர் குடிக்க முயற்சிக்கவும். இஞ்சி தேநீரும் உங்கள் தொண்டையை சமாதானப்படுத்த உதவும். குளிர்ந்த உணவுகள் மற்றும் பானங்களைத் தவிர்க்கவும். யூகலிப்டஸ் எண்ணெயுடன் நீராவிப் பதனம் நிவாரணி அளிக்கும். உங்கள் இருமல் ஒரு வாரத்திற்கு மேல் நீடித்தாலோ அல்லது சுவாசிப்பதில் சிரமத்துடன் இருந்தாலோ, மருத்துவரைக் கலந்து ஆலோசிக்கவும்。",
+                    hospitals: "உங்களுக்கு அருகிலுள்ள மருத்துவமனைகளைக் கண்டுபிடிக்க நான் உதவலாம். தயவுசெய்து உங்கள் தற்போதைய இருப்பிடத்தைப் பகிர்ந்து கொள்ள முடியுமா? மாற்றாக, உங்கள் பகுதியில் உள்ள மருத்துவமனைகளைப் பார்க்க நாங்களின் முக்கிய இணையதளத்தில் 'அருகிலுள்ள மருத்துவமனைகள்' பகுதிக்குச் செல்லலாம்。",
+                    doctor: "ஆலோசனைக்கு மருத்துவருடன் இணைக்க நான் உதவலாம். உங்கள் பகுதியில் கிடைக்கும் மருத்துவர்களைக் கண்டுபிடிக்க என்னை விரும்புகிறீர்களா? தயவுசெய்து உங்கள் இருப்பிடத்தையும் நீங்கள் தேடும் நிபுணத்துவ வகையையும் எனக்குத் தெரிவிக்கவும்。",
+                    default: "உங்கள் சுகாதார கேள்விகளுக்கு உதவ நான் இங்கே இருக்கிறேன். நீங்கள் என்னிடம் அறிகுறிகள், வீட்டு வைத்தியங்கள் அல்லது பொது சுகாதார தகவல்கள் பற்றி கேட்கலாம். உங்களுக்கு உடனடி மருத்துவ கவனிப்பு தேவைப்பட்டால், தயவுசெய்து உங்கள் உள்ளூர் சுகாதார சேவை வழங்குநரைத் தொடர்பு கொள்ளுங்கள்。"
                 },
                 te: {
-                    headache: "మీకు తలనొప్పి ఉన్నందుకు నాకు చింత ఉంది. తేలిక తలనొప్పి కోసం, నిశబ్దమైన, చీకటి గదిలో విశ్రాంతి తీసుకోండి. మీరు మీ నుదుటిపై చల్లని గుడ్డను కూడా ఉంచవచ్చు. హైడ్రేటెడ్‌గా ఉండండి మరియు ప్రకాశవంతమైన కాంతి నుండి దూరంగా ఉండండి. మీ తలనొప్పి ఒక రోజుకు పైగా ఉంటే లేదా తీవ్రంగా ఉంటే, దయచేసి వైద్యుని సంప్రదించండి.",
-                    fever: "జ్వరం కోసం, నీర్పెరుక్గా ఉండటం ముఖ్యం. నీరు, మూలికా టీ మరియు స్పష్టమైన సూప్‌లు వంటి ద్రవాలను మోతాదు తాగండి. మీట్పైబై కోసం ఓయ్వ్ ముఖ్యం. మీరు తులసి ఆకులు లేదా ధనియా టీ వంటి హోమ్ రెమెడీలను ప్రయత్నించవచ్చు. మీ ఉష్ణోగ్రత 102°F (39°C) కంటే ఎక్కువగా ఉంటే లేదా మూడు రోజుల పాటు ఉంటే, వైద్య సహాయం కోసం వెళ్ళండి.",
-                    cough: "దగ్గు కోసం, వెన్తతేన్ మరియు నిమ్మడి టీ తాగడానికి ప్రయత్నించండి. అల్లం టీ కూడా మీ గొంతును ప్రశాంతపరచడంలో సహాయపడుతుంది. చల్లని ఆహారాలు మరియు పానీయాలను నివారించండి. యూకలిప్టస్ నూనెతో స్టీమ్ ఇన్‌హలేషన్ ఉపశమనం ఇవ్వచ్చు. మీ దగ్గు ఒక వారం పాటు ఉంటే లేదా శ్వాస తీసుకోవడంలో ఇబ్బంధకంతో ఉంటే, వైద్యుని సంప్రదించండి.",
-                    hospitals: "మీకు దగ్గరలోని ఆస్పత్రులను కనుగొనడంలో నేను సహాయం చేయగలను. మీరు దయచేసి మీ ప్రస్తుత స్థానాన్ని పంచుకోగలరా? ప్రత్యామ్నాయంగా, మీ ప్రాంతంలోని ఆస్పత్రులను చూడటానికి మా ప్రధాన వెబ్‌సైట్‌లో 'దగ్గరలోని ఆస్పత్రులు' విభాగానికి వెళ్ళవచ్చు.",
-                    doctor: "సంప్రదింపు కోసం నేను మీను వైద్యునితో కలుపుతాను. మీరు మీ ప్రాంతంలో అందుబాటులో ఉన్న వైద్యులను కనుగొనాలని నాకు ఉందా? దయచేసి మీ స్థానాన్ని మరియు మీరు వెతుకుంటున్న నిపుణుడి రకాన్ని నాకు తెలియజేయండి.",
-                    default: "మీ ఆరోగ్య ప్రశ్నలకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను. మీరు నాతో లక్షణాలు, హోమ్ రెమెడీలు లేదా సాధారణ ఆరోగ్య సమాచారం గురించి అడగవచ్చు. మీకు తక్షణ వైద్య సంరక్షణ అవసరమైతే, దయచేసి మీ స్థానిక ఆరోగ్య సేవా ప్రొవైడర్‌ని సంప్రదించండి."
+                    headache: "మీకు తలనొప్పి ఉన్నందుకు నాకు చింత ఉంది. తేలిక తలనొప్పి కోసం, నిశబ్దమైన, చీకటి గదిలో విశ్రాంతి తీసుకోండి. మీరు మీ నుదుటిపై చల్లని గుడ్డను కూడా ఉంచవచ్చు. హైడ్రేటెడ్‌గా ఉండండి మరియు ప్రకాశవంతమైన కాంతి నుండి దూరంగా ఉండండి. మీ తలనొప్పి ఒక రోజుకు పైగా ఉంటే లేదా తీవ్రంగా ఉంటే, దయచేసి వైద్యుని సంప్రదించండి。",
+                    fever: "జ్వరం కోసం, నీర్పెరుక్గా ఉండటం ముఖ్యం. నీరు, మూలికా టీ మరియు స్పష్టమైన సూప్‌లు వంటి ద్రవాలను మోతాదు తాగండి. మీట్పైబై కోసం ఓయ్వ్ ముఖ్యం. మీరు తులసి ఆకులు లేదా ధనియా టీ వంటి హోమ్ రెమెడీలను ప్రయత్నించవచ్చు. మీ ఉష్ణోగ్రత 102°F (39°C) కంటే ఎక్కువగా ఉంటే లేదా మూడు రోజుల పాటు ఉంటే, వైద్య సహాయం కోసం వెళ్ళండి。",
+                    cough: "దగ్గు కోసం, వెన్తతేన్ మరియు నిమ్మడి టీ తాగడానికి ప్రయత్నించండి. అల్లం టీ కూడా మీ గొంతును ప్రశాంతపరచడంలో సహాయపడుతుంది. చల్లని ఆహారాలు మరియు పానీయాలను నివారించండి. యూకలిప్టస్ నూనెతో స్టీమ్ ఇన్‌హలేషన్ ఉపశమనం ఇవ్వచ్చు. మీ దగ్గు ఒక వారం పాటు ఉంటే లేదా శ్వాస తీసుకోవడంలో ఇబ్బంధకంతో ఉంటే, వైద్యుని సంప్రదించండి。",
+                    hospitals: "మీకు దగ్గరలోని ఆస్పత్రులను కనుగొనడంలో నేను సహాయం చేయగలను. మీరు దయచేసి మీ ప్రస్తుత స్థానాన్ని పంచుకోగలరా? ప్రత్యామ్నాయంగా, మీ ప్రాంతంలోని ఆస్పత్రులను చూడటానికి మా ప్రధాన వెబ్‌సైట్‌లో 'దగ్గరలోని ఆస్పత్రులు' విభాగానికి వెళ్ళవచ్చు。",
+                    doctor: "సంప్రదింపు కోసం నేను మీను వైద్యునితో కలుపుతాను. మీరు మీ ప్రాంతంలో అందుబాటులో ఉన్న వైద్యులను కనుగొనాలని నాకు ఉందా? దయచేసి మీ స్థానాన్ని మరియు మీరు వెతుకుంటున్న నిపుణుడి రకాన్ని నాకు తెలియజేయండి。",
+                    default: "మీ ఆరోగ్య ప్రశ్నలకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను. మీరు నాతో లక్షణాలు, హోమ్ రెమెడీలు లేదా సాధారణ ఆరోగ్య సమాచారం గురించి అడగవచ్చు. మీకు తక్షణ వైద్య సంరక్షణ అవసరమైతే, దయచేసి మీ స్థానిక ఆరోగ్య సేవా ప్రొవైడర్‌ని సంప్రదించండి。"
                 },
                 bn: {
                     headache: "আপনার মাথাব্যথা হওয়ায় আমি দুঃখিত। হালকা মাথাব্যথার জন্য, একটি শান্ত, অন্ধকার ঘরে বিশ্রাম নেওয়ার চেষ্টা করুন। আপনি আপনার কপালে একটি ঠান্ডা কাপড়ও প্রয়োগ করতে পারেন। হাইড্রেটেড থাকুন এবং উজ্জ্বল আলো এড়িয়ে চলুন। যদি আপনার মাথাব্যথা একদিনের বেশি স্থায়ী হয় বা গুরুতর হয়, অনুগ্রহ করে একজন ডাক্তারের সাথে পরামর্শ করুন।",
@@ -802,57 +896,57 @@
                     default: "আমি আপনার স্বাস্থ্য প্রশ্নের উত্তর দিতে এখানে আছি। আপনি আমাকে লক্ষণ, ঘরোয়া প্রতিকার বা সাধারণ স্বাস্থ্য তথ্য সম্পর্কে জিজ্ঞাসা করতে পারেন। আপনার যদি তাত্ক্ষণিক চিকিৎসা সহায়তার প্রয়োজন হয়, অনুগ্রহ করে আপনার স্থানীয় স্বাস্থ্যসেবা প্রদানকারীর সাথে যোগাযোগ করুন।"
                 },
                 mr: {
-                    headache: "तुम्हाला डोके दुखत असल्याबद्दल मला दुःख आहे. हलक्या डोकेदुखीसाठी, एका शांत, अंधार खोलीतील विश्रांती घ्या. तुम्ही तुमच्या भुवईवर थंड कापड देखील लावू शकता. हायड्रेटेड रहा आणि तेजस्वी प्रकाशापासून दूर राहा. जर तुमचे डोकेदुखी एका दिवसापेक्षा जास्त काळ टिकून राहिले किंवा गंभीर असल्यास, कृपया डॉक्टरांशी सल्ला करा.",
-                    fever: "तापासाठी, हायड्रेटेड राहणे महत्त्वाचे आहे. पाणी, औषधी चा आणि स्पष्ट सूप यांसारखे द्रव पदार्थ भरपूर प्रमाणात प्या. रिकव्हरीसाठी विश्रांती अत्यंत महत्त्वाची आहे. तुम्ही तुळशी पाने किंवा धनिया चाया यांसारखे घरगुती उपचार वापरू शकता. जर तुमचे तापमान 102°F (39°C) पेक्षा जास्त असेल किंवा तीन दिवसांपेक्षा जास्त काळ टिकून राहिल्यास, वैद्यकीय मदत घ्या.",
-                    cough: "खोकल्यासाठी, उष्ण मध आणि लिंबू चा प्यायचा प्रयत्न करा. आले चाही तुमचे घश शांत करण्यास मदत करू शकतो. थंड अन्न आणि पेय पदार्थ टाळा. युकॅलिप्टस तेलाने वाफा घेणे आराम देऊ शकते. जर तुमची खोकली एका आठवड्यापेक्षा जास्त काळ टिकून राहिली किंवा श्वासोश्वास घेण्यास त्रास होत असेल, तर डॉक्टरांशी सल्ला करा.",
-                    hospitals: "मी तुमच्या जवळच्या रुग्णालये शोधण्यासाठी तुम्हाला मदत करू शकतो. तुम्ही कृपया तुमचे सध्याचे स्थान शेअर करू शकता का? पर्यायाने, तुमच्या क्षेत्रातील रुग्णालये पाहण्यासाठी आमच्या मुख्य वेबसाइटवर 'जवळची रुग्णालये' विभागात जा.",
-                    doctor: "सल्ल्यासाठी मी तुम्हाला डॉक्टरांशी जोडू शकतो. तुम्हाला तुमच्या क्षेत्रात उपलब्ध डॉक्टर शोधायचे आहे का? कृपया मला तुमचे स्थान आणि तुम्ही ज्या तज्ञाचा शोध घेत आहात ते सांगा.",
-                    default: "तुमच्या आरोग्य प्रश्नांची उत्तरे देण्यासाठी मी इथे आहे. तुम्ही मला लक्षणे, घरगुती उपचार किंवा सामान्य आरोग्य माहितीविषयी विचारू शकता. तुम्हाला तात्काळ वैद्यकीय काळजी आवश्यक असल्यास, कृपया तुमच्या स्थानिक आरोग्य सेवा प्रदात्याशी संपर्क साधा."
+                    headache: "तुम्हाला डोके दुखत असल्याबद्दल मला दुःख आहे. हलक्या डोकेदुखीसाठी, एका शांत, अंधार खोलीतील विश्रांती घ्या. तुम्ही तुमच्या भुवईवर थंड कापड देखील लावू शकता. हायड्रेटेड रहा आणि तेजस्वी प्रकाशापासून दूर राहा. जर तुमचे डोकेदुखी एका दिवसापेक्षा जास्त काळ टिकून राहिले किंवा गंभीर असल्यास, कृपया डॉक्टरांशी सल्ला करा।",
+                    fever: "तापासाठी, हायड्रेटेड राहणे महत्त्वाचे आहे. पाणी, औषधी चा आणि स्पष्ट सूप यांसारखे द्रव पदार्थ भरपूर प्रमाणात प्या. रिकव्हरीसाठी विश्रांती अत्यंत महत्त्वाची आहे. तुम्ही तुळशी पाने किंवा धनिया चाया यांसारखे घरगुती उपचार वापरू शकता. जर तुमचे तापमान 102°F (39°C) पेक्षा जास्त असेल किंवा तीन दिवसांपेक्षा जास्त काळ टिकून राहिल्यास, वैद्यकीय मदत घ्या।",
+                    cough: "खोकल्यासाठी, उष्ण मध आणि लिंबू चा प्यायचा प्रयत्न करा. आले चाही तुमचे घश शांत करण्यास मदत करू शकतो. थंड अन्न आणि पेय पदार्थ टाळा. युकॅलिप्टस तेलाने वाफा घेणे आराम देऊ शकते. जर तुमची खोकली एका आठवड्यापेक्षा जास्त काळ टिकून राहिली किंवा श्वासोश्वास घेण्यास त्रास होत असेल, तर डॉक्टरांशी सल्ला करा।",
+                    hospitals: "मी तुमच्या जवळच्या रुग्णालये शोधण्यासाठी तुम्हाला मदत करू शकतो. तुम्ही कृपया तुमचे सध्याचे स्थान शेअर करू शकता का? पर्यायाने, तुमच्या क्षेत्रातील रुग्णालये पाहण्यासाठी आमच्या मुख्य वेबसाइटवर 'जवळची रुग्णालये' विभागात जा।",
+                    doctor: "सल्ल्यासाठी मी तुम्हाला डॉक्टरांशी जोडू शकतो. तुम्हाला तुमच्या क्षेत्रात उपलब्ध डॉक्टर शोधायचे आहे का? कृपया मला तुमचे स्थान आणि तुम्ही ज्या तज्ञाचा शोध घेत आहात ते सांगा।",
+                    default: "तुमच्या आरोग्य प्रश्नांची उत्तरे देण्यासाठी मी इथे आहे। तुम्ही मला लक्षणे, घरगुती उपचार किंवा सामान्य आरोग्य माहितीविषयी विचारू शकता। तुम्हाला तात्काळ वैद्यकीय काळजी आवश्यक असल्यास, कृपया तुमच्या स्थानिक आरोग्य सेवा प्रदात्याशी संपर्क साधा।"
                 }
             };
-            
+
             // Function to add a message to the chat
             function addMessage(text, isUser = false) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message');
                 messageDiv.classList.add(isUser ? 'user' : 'bot');
-                
+
                 const messageContent = document.createElement('div');
                 messageContent.classList.add('message-content');
-                
+
                 const messageText = document.createElement('p');
                 messageText.classList.add('message-text');
                 messageText.textContent = text;
-                
+
                 const messageTime = document.createElement('div');
                 messageTime.classList.add('message-time');
                 messageTime.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                
+
                 messageContent.appendChild(messageText);
                 messageContent.appendChild(messageTime);
                 messageDiv.appendChild(messageContent);
-                
+
                 messagesContainer.appendChild(messageDiv);
-                
+
                 // Scroll to bottom
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
-            
+
             // Function to show typing indicator
             function showTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.classList.add('typing-indicator');
                 typingDiv.id = 'typingIndicator';
-                
+
                 for (let i = 0; i < 3; i++) {
                     const span = document.createElement('span');
                     typingDiv.appendChild(span);
                 }
-                
+
                 messagesContainer.appendChild(typingDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
-            
+
             // Function to remove typing indicator
             function removeTypingIndicator() {
                 const typingIndicator = document.getElementById('typingIndicator');
@@ -860,75 +954,76 @@
                     typingIndicator.remove();
                 }
             }
-            
+
             // Function to get bot response
             function getBotResponse(userMessage) {
                 const message = userMessage.toLowerCase();
                 const responses = botResponses[currentLanguage];
-                
-                if (message.includes('headache')) {
+
+                // FIX: Added multilingual keywords to recognition for better response matching
+                if (message.includes('headache') || message.includes('सिरदर्द') || message.includes('தலவலி') || message.includes('తలనొప్పి') || message.includes('মাথাব্যথা') || message.includes('डोके दुख')) {
                     return responses.headache;
-                } else if (message.includes('fever') || message.includes('temperature')) {
+                } else if (message.includes('fever') || message.includes('बुखार') || message.includes('காய்ச்சல்') || message.includes('జ్వరం') || message.includes('জ্বর') || message.includes('ताप')) {
                     return responses.fever;
-                } else if (message.includes('cough')) {
+                } else if (message.includes('cough') || message.includes('खांसी') || message.includes('இரும') || message.includes('దగ్గు') || message.includes('কাশি') || message.includes('खोकला')) {
                     return responses.cough;
-                } else if (message.includes('hospital') || message.includes('nearby')) {
+                } else if (message.includes('hospital') || message.includes('अस्पताल') || message.includes('மருத்துவமனை') || message.includes('ఆస్పత్రి') || message.includes('হাসপাতাল') || message.includes('रुग्णालय')) {
                     return responses.hospitals;
-                } else if (message.includes('doctor') || message.includes('physician')) {
+                } else if (message.includes('doctor') || message.includes('physician') || message.includes('डॉक्टर') || message.includes('மருத்துவர்') || message.includes('వైద్యుడు') || message.includes('চিকিৎসক')) {
                     return responses.doctor;
                 } else {
                     return responses.default;
                 }
             }
-            
+
             // Function to handle sending a message
             function sendMessage() {
                 const message = chatInput.value.trim();
                 if (message === '') return;
-                
+
                 // Add user message
                 addMessage(message, true);
-                
+
                 // Clear input
                 chatInput.value = '';
-                
+
                 // Reset input height
                 chatInput.style.height = 'auto';
-                
+
                 // Disable send button temporarily
                 sendBtn.disabled = true;
-                
+
                 // Show typing indicator
                 showTypingIndicator();
-                
+
                 // Simulate bot response after delay
                 setTimeout(() => {
                     removeTypingIndicator();
-                    
+
                     // Get bot response
                     const botResponse = getBotResponse(message);
-                    
+
                     // Add bot message
                     addMessage(botResponse);
-                    
+
                     // If user asked for a doctor, show doctor card
                     if (message.toLowerCase().includes('doctor') || message.toLowerCase().includes('physician')) {
                         showDoctorCard();
                     }
-                    
+
                     // Re-enable send button
                     sendBtn.disabled = false;
-                    
+
                     // Focus back on input
                     chatInput.focus();
                 }, 1500);
             }
-            
+
             // Function to show doctor card
             function showDoctorCard() {
                 const doctorCard = document.createElement('div');
                 doctorCard.classList.add('doctor-card');
-                
+
                 doctorCard.innerHTML = `
                     <img src="https://i.imgur.com/1ZqZcFj.jpg" alt="Dr. Rajesh Sharma" class="doctor-image">
                     <div class="doctor-info">
@@ -945,24 +1040,24 @@
                     </div>
                     <button class="connect-button">Connect Now</button>
                 `;
-                
+
                 messagesContainer.appendChild(doctorCard);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
+
                 // Add event listener to connect button
                 const connectButton = doctorCard.querySelector('.connect-button');
                 connectButton.addEventListener('click', function() {
                     addMessage("I'd like to connect with Dr. Rajesh Sharma.", true);
-                    
+
                     showTypingIndicator();
-                    
+
                     setTimeout(() => {
                         removeTypingIndicator();
                         addMessage("I'm connecting you with Dr. Rajesh Sharma. Please wait while we set up the consultation. You will receive a notification shortly with further instructions.");
                     }, 1500);
                 });
             }
-            
+
             // Function to clear chat
             function clearChat() {
                 // Clear all messages except the welcome message
@@ -972,98 +1067,78 @@
                         message.remove();
                     }
                 });
-                
+
                 // Remove any doctor cards
                 const doctorCards = messagesContainer.querySelectorAll('.doctor-card');
                 doctorCards.forEach(card => card.remove());
             }
-            
+
             // Function to start a new chat
             function newChat() {
                 clearChat();
                 addMessage("Hello! I'm your SwasthyaSetu Health Assistant. How can I help you today?");
             }
-            
+
             // Event listeners
             sendBtn.addEventListener('click', sendMessage);
-            
+
             chatInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
             });
-            
+
             // Auto-resize textarea
             chatInput.addEventListener('input', function() {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 200) + 'px';
             });
-            
-            // Mic button functionality
-            micBtn.addEventListener('click', function() {
-                if (!isRecording) {
-                    // Start recording
-                    this.style.color = 'var(--accent-color)';
-                    isRecording = true;
-                    
-                    // Simulate voice recording
-                    setTimeout(() => {
-                        this.style.color = '';
-                        isRecording = false;
-                        
-                        // Simulate voice input
-                        chatInput.value = "I have a headache and fever for the past two days.";
-                        sendMessage();
-                    }, 3000);
-                } else {
-                    // Stop recording
-                    this.style.color = '';
-                    isRecording = false;
-                }
-            });
-            
+
             // Attach button functionality
             attachBtn.addEventListener('click', function() {
                 alert('File attachment feature would be implemented here. You could upload medical reports or images.');
             });
-            
+
             // Language button functionality
             languageBtn.addEventListener('click', function() {
                 languageModal.show();
             });
-            
+
             // Language selection
             languageOptions.forEach(option => {
                 option.addEventListener('click', function() {
-                    currentLanguage = this.getAttribute('data-lang');
+                    const newLanguage = this.getAttribute('data-lang');
+                    if (newLanguage !== currentLanguage) {
+                        currentLanguage = newLanguage;
+                        addMessage(`Language changed to ${this.textContent.trim()}. Voice input language is now updated.`);
+                    }
                     languageModal.hide();
-                    addMessage(`Language changed to ${this.textContent.trim()}`);
                 });
             });
-            
+
             // Clear chat button functionality
             clearChatBtn.addEventListener('click', function() {
                 if (confirm('Are you sure you want to clear the chat history?')) {
                     clearChat();
                 }
             });
-            
+
             // Help button functionality
             helpBtn.addEventListener('click', function() {
-                addMessage("How can I use this chatbot?");
-                
+                addMessage("How can I use this chatbot?", true);
+
                 showTypingIndicator();
-                
+
                 setTimeout(() => {
                     removeTypingIndicator();
                     addMessage("You can use this chatbot by typing your health questions or symptoms in the input box below. You can also click the microphone button to speak your question. The chatbot will provide information about symptoms, home remedies, and can connect you with doctors if needed. You can also use the health suggestion buttons for common questions.");
                 }, 1500);
             });
-            
+
             // New chat button functionality
             newChatBtn.addEventListener('click', newChat);
-            
+
             // Health suggestion functionality
             healthSuggestions.forEach(suggestion => {
                 suggestion.addEventListener('click', function() {
@@ -1072,67 +1147,76 @@
                     sendMessage();
                 });
             });
-            
+
             // Menu item functionality
             menuItems.forEach(item => {
                 item.addEventListener('click', function() {
                     // Remove active class from all items
                     menuItems.forEach(i => i.classList.remove('active'));
-                    
+
                     // Add active class to clicked item
                     this.classList.add('active');
-                    
+
                     // Get the text of the clicked item
                     const itemText = this.textContent.trim();
-                    
+
                     // Add a message based on the clicked item
                     if (itemText === 'Current Chat') {
                         // Do nothing, already active
                         return;
                     } else if (itemText === 'Common Symptoms') {
-                        addMessage("Tell me about common symptoms you're experiencing.");
+                        addMessage("Tell me about common symptoms you're experiencing.", true);
                     } else if (itemText === 'Home Remedies') {
-                        addMessage("I can help you with home remedies for common health issues. What would you like to know about?");
+                        addMessage("I can help you with home remedies for common health issues. What would you like to know about?", true);
                     } else if (itemText === 'Medications') {
-                        addMessage("I can provide information about common medications and their uses. What medication would you like to know about?");
+                        addMessage("I can provide information about common medications and their uses. What medication would you like to know about?", true);
                     } else if (itemText === 'Nutrition') {
-                        addMessage("I can provide nutrition advice for better health. What would you like to know about?");
+                        addMessage("I can provide nutrition advice for better health. What would you like to know about?", true);
                     } else if (itemText === 'Fitness') {
-                        addMessage("I can provide fitness tips and exercises for better health. What would you like to know about?");
+                        addMessage("I can provide fitness tips and exercises for better health. What would you like to know about?", true);
                     } else if (itemText === 'Find Hospitals') {
-                        addMessage("I can help you find nearby hospitals. Could you please share your current location?");
+                        addMessage("I can help you find nearby hospitals. Could you please share your current location?", true);
                     } else if (itemText === 'Connect to Doctor') {
-                        addMessage("I can connect you with a doctor for a consultation. Would you like me to find available doctors in your area?");
+                        addMessage("I can connect you with a doctor for a consultation. Would you like me to find available doctors in your area?", true);
                     } else if (itemText === 'Book Appointment') {
-                        addMessage("I can help you book an appointment with a doctor. Please let me know your location and the type of specialist you're looking for.");
+                        addMessage("I can help you book an appointment with a doctor. Please let me know your location and the type of specialist you're looking for.", true);
                     } else if (itemText === 'Medical Records') {
-                        addMessage("I can help you access your medical records. Please log in to your account to view your medical history.");
+                        addMessage("I can help you access your medical records. Please log in to your account to view your medical history.", true);
                     }
-                    
+
+                    // For quick actions, simulate a bot response
+                    if (itemText.includes('Hospital') || itemText.includes('Doctor') || itemText.includes('Appointment') || itemText.includes('Records')) {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            removeTypingIndicator();
+                            addMessage("I've received your request. Let me see how I can assist with that.");
+                        }, 1000);
+                    }
+
                     // Focus on input
                     chatInput.focus();
                 });
             });
-            
+
             // Mobile menu toggle functionality
             mobileMenuOpen.addEventListener('click', function() {
                 sidebar.classList.add('open');
             });
-            
+
             mobileMenuToggle.addEventListener('click', function() {
                 sidebar.classList.remove('open');
             });
-            
+
             // Close sidebar when clicking outside on mobile
             document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768 && 
-                    !sidebar.contains(e.target) && 
-                    !mobileMenuOpen.contains(e.target) && 
+                if (window.innerWidth <= 768 &&
+                    !sidebar.contains(e.target) &&
+                    !mobileMenuOpen.contains(e.target) &&
                     sidebar.classList.contains('open')) {
                     sidebar.classList.remove('open');
                 }
             });
-            
+
             // Focus on input when page loads
             chatInput.focus();
         });

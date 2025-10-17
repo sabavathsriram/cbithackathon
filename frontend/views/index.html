@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swasthyasetu - Empowering Rural India with Easy Healthcare Access</title>
     
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
-    <!-- Lottie Player -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -1122,7 +1117,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -1154,7 +1148,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero-section" id="home">
         <div class="particles" id="heroParticles"></div>
         <div class="container">
@@ -1199,7 +1192,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features-section" id="features">
         <div class="container">
             <div class="section-title animate__animated animate__fadeIn">
@@ -1241,7 +1233,6 @@
         </div>
     </section>
 
-    <!-- How It Works Section -->
     <section class="how-it-works">
         <div class="container">
             <div class="section-title animate__animated animate__fadeIn">
@@ -1276,7 +1267,6 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="testimonials" id="testimonials">
         <div class="container">
             <div class="section-title animate__animated animate__fadeIn">
@@ -1312,7 +1302,6 @@
         </div>
     </section>
 
-    <!-- About Us Section -->
     <section class="about-section" id="about">
         <div class="container">
             <div class="about-content animate__animated animate__fadeIn">
@@ -1324,7 +1313,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1344,7 +1332,6 @@
         </div>
     </footer>
 
-    <!-- Voice Input Modal -->
     <div class="modal fade" id="voiceModal" tabindex="-1" aria-labelledby="voiceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1355,6 +1342,9 @@
                 <div class="modal-body">
                     <div class="voice-input-container">
                         <p>Describe your symptoms by typing or speaking:</p>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-top: -10px;">
+                            <i class="fas fa-language"></i> Please speak in **English (India)** for best results.
+                        </p>
                         <textarea class="voice-input-box" id="symptomInput" rows="3" placeholder="Type your symptoms here..."></textarea>
                         <div class="loading-rangoli" id="loadingRangoli">
                             <div></div>
@@ -1390,12 +1380,10 @@
         </div>
     </div>
 
-    <!-- Floating CTA -->
     <div class="floating-cta" id="floatingCta">
         <i class="fas fa-comment-medical"></i>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -1547,7 +1535,9 @@
             voiceModal.show();
         });
         
-        // Voice Input Functionality
+        // =========================================================
+        // Voice Input (Voice-to-Text) Functionality
+        // =========================================================
         const startVoiceBtn = document.getElementById('startVoiceBtn');
         const stopVoiceBtn = document.getElementById('stopVoiceBtn');
         const clearBtn = document.getElementById('clearBtn');
@@ -1565,30 +1555,48 @@
             
             recognition.continuous = false;
             recognition.interimResults = true;
-            recognition.lang = 'en-US';
+            // Set the language to Indian English (en-IN) for better accuracy
+            recognition.lang = 'en-IN'; 
             
+            recognition.onstart = () => {
+                 // Provide visual feedback when listening starts
+                 symptomInput.placeholder = 'Listening... Speak clearly now.';
+            };
+
             recognition.onresult = (event) => {
                 let transcript = '';
+                // Process only final results for transcription
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
                         transcript += event.results[i][0].transcript;
                     }
                 }
-                symptomInput.value += transcript;
+                // Append final transcript to the input box
+                symptomInput.value += transcript + ' ';
             };
             
             recognition.onerror = (event) => {
                 console.error('Speech recognition error', event.error);
                 stopRecording();
+                alert('Voice input error. Please try again or type your symptoms. Error: ' + event.error);
             };
             
             recognition.onend = () => {
                 stopRecording();
+                symptomInput.placeholder = 'Type your symptoms here...'; // Reset placeholder
             };
+        } else {
+            // Handle case where API is not supported (e.g., non-Chromium/Firefox browsers or non-HTTPS)
+            startVoiceBtn.disabled = true;
+            startVoiceBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Voice Not Supported';
+            document.getElementById('micIcon').style.cursor = 'not-allowed';
+            console.warn('Speech Recognition API is not supported in this browser or requires a secure (HTTPS) context.');
         }
         
         function startRecording() {
             if (recognition) {
+                // Clear previous content before starting a new session
+                symptomInput.value = ''; 
                 recognition.start();
                 startVoiceBtn.style.display = 'none';
                 stopVoiceBtn.style.display = 'inline-block';
@@ -1689,7 +1697,6 @@
         document.getElementById('micIcon').addEventListener('click', () => {
             const voiceModal = new bootstrap.Modal(document.getElementById('voiceModal'));
             voiceModal.show();
-            setTimeout(startRecording, 500);
         });
         
         // Smooth scrolling for navigation links
@@ -1719,26 +1726,6 @@
             });
         }
         
-        // Demo script note for judges:
-        /*
-        DEMO SCRIPT (30 seconds):
-        
-        1. "Welcome to Swasthyasetu, a healthcare platform designed specifically for rural India."
-        
-        2. "Our platform provides easy access to symptom checking via text or voice, natural remedies, hospital finder, and doctor connections."
-        
-        3. "Let me show you our voice symptom checker - I'll click on the microphone icon and speak a symptom like 'headache'."
-        
-        4. (Click mic icon, wait for modal, then say "headache") "As you can see, the system transcribes my voice and provides possible conditions and natural remedies."
-        
-        5. "Our platform also features like hospital finder and doctor connect to help rural communities access healthcare services."
-        
-        6. "We've designed Swasthyasetu with a focus on accessibility, cultural relevance, and ease of use for rural communities."
-        
-        7. "The platform works even with limited internet connectivity and provides valuable health information to those who need it most."
-        
-        8. "Thank you for your time. We believe Swasthyasetu can make a real difference in bridging the healthcare gap in rural India."
-        */
     </script>
 </body>
 </html>

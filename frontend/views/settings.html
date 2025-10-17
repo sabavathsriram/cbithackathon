@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwasthyaSetu - Settings</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
     <style>
         :root {
             /* Professional Medical Color Theme */
@@ -218,7 +214,13 @@
         }
         
         .settings-section {
+            display: none; /* Hidden by default, shown by JS */
             margin-bottom: 30px;
+        }
+
+        /* Initial active section */
+        .settings-section.active {
+            display: block; 
         }
         
         .settings-section-title {
@@ -528,3 +530,450 @@
             margin-right: 10px;
             color: var(--dark-color);
         }
+        
+        /* Media Queries for Responsiveness */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+            }
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+            .settings-sidebar {
+                /* Hide sidebar on small screens to prioritize content */
+                display: none;
+            }
+            .topbar-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar" id="appSidebar">
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-logo">
+                <i class="fas fa-heartbeat"></i> SwasthyaSetu
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="profile.html" class="sidebar-menu-item">
+                <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="#" class="sidebar-menu-item active">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="help.html" class="sidebar-menu-item">
+                <i class="fas fa-question-circle"></i> Help & Support
+            </a>
+            <hr class="mx-3">
+            <a href="logout.html" class="sidebar-menu-item">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        
+        <div class="topbar">
+            <div class="topbar-title">Account Settings</div>
+            <div class="topbar-actions">
+                <button class="notification-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="profile-dropdown">
+                    <img src="https://i.imgur.com/G5gJ8jP.png" alt="Profile" class="profile-image">
+                    <span class="d-none d-md-inline">Ramesh K.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-container">
+            
+            <div class="settings-sidebar">
+                <h5 class="mb-3 text-secondary">Settings Navigation</h5>
+                <ul class="settings-menu">
+                    <li class="settings-menu-item active" data-target="general">
+                        <i class="fas fa-sliders-h"></i> General
+                    </li>
+                    <li class="settings-menu-item" data-target="security">
+                        <i class="fas fa-shield-alt"></i> Security & Privacy
+                    </li>
+                    <li class="settings-menu-item" data-target="notifications">
+                        <i class="fas fa-bell"></i> Notifications
+                    </li>
+                    <li class="settings-menu-item" data-target="payment">
+                        <i class="fas fa-wallet"></i> Payment & Billing
+                    </li>
+                    <li class="settings-menu-item" data-target="data">
+                        <i class="fas fa-database"></i> Data & Export
+                    </li>
+                </ul>
+            </div>
+
+            <div class="settings-content">
+                
+                <div class="settings-section active" id="general">
+                    <div class="settings-section-title">General Account Settings</div>
+                    
+                    <form id="generalForm">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" value="Ramesh Kumar">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="emailAddress" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="emailAddress" value="ramesh.k@example.com" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="language" class="form-label">Preferred Language</label>
+                                <select class="form-select" id="language">
+                                    <option value="en" selected>English</option>
+                                    <option value="hi">हिंदी (Hindi)</option>
+                                    <option value="ta">தமிழ் (Tamil)</option>
+                                    <option value="te">తెలుగు (Telugu)</option>
+                                    <option value="bn">বাংলা (Bengali)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="timezone" class="form-label">Time Zone</label>
+                                <select class="form-select" id="timezone">
+                                    <option value="ist" selected>Asia/Kolkata (IST) +5:30</option>
+                                    <option value="utc">UTC</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="defaultDoctor" class="form-label">Default Consultation Type</label>
+                            <select class="form-select" id="defaultDoctor">
+                                <option value="general" selected>General Medicine (First Aid/Fever)</option>
+                                <option value="pediatrics">Pediatrics (Child Health)</option>
+                                <option value="gynecology">Gynecology (Women's Health)</option>
+                                <option value="orthopedics">Orthopedics (Bone/Joint)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn-secondary" onclick="alert('Changes Discarded');">Discard</button>
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="settings-section" id="security">
+                    <div class="settings-section-title">Security & Privacy</div>
+                    
+                    <div class="two-factor-card">
+                        <div class="two-factor-title">
+                            <i class="fas fa-user-lock"></i> Two-Factor Authentication (2FA)
+                        </div>
+                        <p class="text-muted">2FA adds an extra layer of security to your account by requiring more than just a password to log in.</p>
+                        <div class="two-factor-status">
+                            <div class="two-factor-status-indicator inactive" id="2faStatusIndicator"></div>
+                            <span id="2faStatusText">Status: Disabled</span>
+                        </div>
+                        <div class="two-factor-actions">
+                            <button class="btn-primary" id="toggle2FA">Enable 2FA</button>
+                            <button class="btn-secondary">View Recovery Codes</button>
+                        </div>
+                    </div>
+                    
+                    <div class="security-settings">
+                        <div class="security-settings-title">
+                            <i class="fas fa-key"></i> Change Password
+                        </div>
+                        <form id="passwordForm">
+                            <div class="form-group">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Password</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-section-title mt-4">Privacy Controls</div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="shareData" checked>
+                        <label class="form-check-label" for="shareData">
+                            Allow anonymous data sharing for healthcare improvements.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="marketingEmails">
+                        <label class="form-check-label" for="marketingEmails">
+                            Receive personalized health tips and offers.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section" id="notifications">
+                    <div class="settings-section-title">Manage Notification Preferences</div>
+                    
+                    <p class="text-muted">Control how you receive alerts about appointments, health reminders, and messages.</p>
+                    
+                    <div class="notification-preferences">
+                        <div class="notification-preferences-title">
+                            <i class="fas fa-envelope"></i> Email Notifications
+                        </div>
+                        <div class="notification-item">
+                            <span>Appointment Confirmations</span>
+                            <label class="notification-toggle">
+                                <input type="checkbox" checked>
+                                <span class="notification-toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <span>Health Reminders (Vaccines, Checkups)</span>
+                            <label class="notification-toggle">
+                                <input type="checkbox" checked>
+                                <span class="notification-toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <span>New Message from Doctor</span>
+                            <label class="notification-toggle">
+                                <input type="checkbox">
+                                <span class="notification-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-preferences">
+                        <div class="notification-preferences-title">
+                            <i class="fas fa-mobile-alt"></i> SMS / Push Notifications
+                        </div>
+                        <div class="notification-item">
+                            <span>Critical Alerts (e.g., Prescription Ready)</span>
+                            <label class="notification-toggle">
+                                <input type="checkbox" checked>
+                                <span class="notification-toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <span>Daily Wellness Tips</span>
+                            <label class="notification-toggle">
+                                <input type="checkbox">
+                                <span class="notification-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary mt-3">Update Preferences</button>
+                </div>
+
+                <div class="settings-section" id="payment">
+                    <div class="settings-section-title">Payment Methods & Billing</div>
+                    
+                    <div class="payment-settings">
+                        <div class="payment-settings-title">
+                            <i class="fas fa-credit-card"></i> Manage Payment Methods
+                        </div>
+                        <p class="text-muted">Select or add a payment method for paid consultations and services.</p>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method selected" data-method="card">
+                                <i class="fas fa-credit-card"></i> Visa **** 1234 (Primary)
+                            </div>
+                            <div class="payment-method" data-method="upi">
+                                <i class="fas fa-mobile-alt"></i> UPI / Google Pay
+                            </div>
+                            <div class="payment-method" data-method="netbanking">
+                                <i class="fas fa-university"></i> Net Banking
+                            </div>
+                        </div>
+                        
+                        <button class="btn-secondary"><i class="fas fa-plus me-2"></i> Add New Method</button>
+                    </div>
+                    
+                    <div class="payment-settings">
+                        <div class="payment-settings-title">
+                            <i class="fas fa-file-invoice"></i> Billing History
+                        </div>
+                        <p class="text-muted">View past invoices for consultations and prescriptions.</p>
+                        <button class="btn-secondary">View Invoices</button>
+                    </div>
+                </div>
+
+                <div class="settings-section" id="data">
+                    <div class="settings-section-title">Data Management & Export</div>
+                    
+                    <div class="security-settings">
+                        <div class="security-settings-title">
+                            <i class="fas fa-download"></i> Export Health Data
+                        </div>
+                        <p class="text-muted">Download a complete archive of your medical records, chat history, and prescriptions in a structured format (JSON/PDF).</p>
+                        <button class="btn-primary"><i class="fas fa-file-download me-2"></i> Request Data Export</button>
+                    </div>
+                    
+                    <div class="security-settings">
+                        <div class="security-settings-title">
+                            <i class="fas fa-trash-alt"></i> Delete Account
+                        </div>
+                        <p class="text-muted">This action is permanent and cannot be undone. All associated health records will be removed after a mandatory 30-day grace period.</p>
+                        <button class="btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"><i class="fas fa-exclamation-triangle me-2"></i> Permanently Delete Account</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteAccountModalLabel"><i class="fas fa-exclamation-triangle me-2"></i> Confirm Account Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Warning:</strong> You are about to permanently delete your SwasthyaSetu account. All health records and data will be lost.</p>
+                    <p>To confirm, type your email address (<strong>ramesh.k@example.com</strong>) below:</p>
+                    <input type="email" class="form-control" id="deleteConfirmEmail" placeholder="Enter email address">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" disabled>I Understand, Delete My Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.settings-menu-item');
+            const sections = document.querySelectorAll('.settings-section');
+            const toggle2FABtn = document.getElementById('toggle2FA');
+            const twoFaStatusIndicator = document.getElementById('2faStatusIndicator');
+            const twoFaStatusText = document.getElementById('2faStatusText');
+            const deleteConfirmEmail = document.getElementById('deleteConfirmEmail');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+            // --- 1. Settings Menu Navigation ---
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+
+                    // Remove 'active' class from all menu items
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    // Add 'active' class to the clicked item
+                    this.classList.add('active');
+
+                    // Hide all sections and show the target section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // --- 2. Form Submission Handlers (Simulated) ---
+            document.getElementById('generalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('General settings saved successfully!');
+            });
+
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newPass = document.getElementById('newPassword').value;
+                const confirmPass = document.getElementById('confirmPassword').value;
+
+                if (newPass !== confirmPass) {
+                    alert('Error: New password and confirm password do not match.');
+                    return;
+                }
+                alert('Password updated successfully!');
+                this.reset();
+            });
+
+            // --- 3. Two-Factor Authentication (2FA) Toggle ---
+            let is2FAEnabled = false;
+
+            function update2FAStatus() {
+                if (is2FAEnabled) {
+                    twoFaStatusIndicator.classList.remove('inactive');
+                    twoFaStatusIndicator.classList.add('active');
+                    twoFaStatusText.textContent = 'Status: Enabled';
+                    toggle2FABtn.textContent = 'Disable 2FA';
+                    toggle2FABtn.classList.remove('btn-primary');
+                    toggle2FABtn.classList.add('btn-danger');
+                } else {
+                    twoFaStatusIndicator.classList.remove('active');
+                    twoFaStatusIndicator.classList.add('inactive');
+                    twoFaStatusText.textContent = 'Status: Disabled';
+                    toggle2FABtn.textContent = 'Enable 2FA';
+                    toggle2FABtn.classList.remove('btn-danger');
+                    toggle2FABtn.classList.add('btn-primary');
+                }
+            }
+
+            toggle2FABtn.addEventListener('click', function() {
+                is2FAEnabled = !is2FAEnabled;
+                update2FAStatus();
+                alert(`Two-Factor Authentication is now ${is2FAEnabled ? 'Enabled' : 'Disabled'}.`);
+            });
+
+            update2FAStatus(); // Initialize status on load
+
+            // --- 4. Payment Method Selection ---
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                    this.classList.add('selected');
+                    alert(`Payment method set to ${this.getAttribute('data-method').toUpperCase()}.`);
+                });
+            });
+
+            // --- 5. Account Deletion Confirmation Logic ---
+            const userEmail = "ramesh.k@example.com"; // Hardcoded for demo
+
+            deleteConfirmEmail.addEventListener('input', function() {
+                if (this.value.trim().toLowerCase() === userEmail) {
+                    confirmDeleteBtn.disabled = false;
+                } else {
+                    confirmDeleteBtn.disabled = true;
+                }
+            });
+
+            confirmDeleteBtn.addEventListener('click', function() {
+                alert('Account deletion initiated. You have 30 days to recover before permanent removal.');
+                const modalElement = document.getElementById('deleteAccountModal');
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                modal.hide();
+                // Redirect user after deletion process starts (e.g., to logout page)
+                // window.location.href = 'logout.html'; 
+            });
+
+        });
+    </script>
+</body>
+</html>
