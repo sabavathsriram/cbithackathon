@@ -321,6 +321,334 @@
             text-decoration: underline;
         }
         
+        /* Role Selection Styles */
+        .role-selection {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .role-card {
+            flex: 1;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .role-card:hover {
+            border-color: var(--primary-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .role-card.selected {
+            border-color: var(--primary-teal);
+            background-color: rgba(0, 188, 212, 0.05);
+        }
+        
+        .role-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-teal);
+        }
+        
+        .role-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .role-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background-color: var(--neutral-light);
+        }
+        
+        .dashboard-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .dashboard-sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+        
+        .dashboard-main {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: var(--primary-teal);
+            border-left-color: var(--primary-teal);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        
+        .user-info h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .user-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .icon-teal {
+            background: rgba(0, 188, 212, 0.1);
+            color: var(--primary-teal);
+        }
+        
+        .icon-purple {
+            background: rgba(123, 31, 162, 0.1);
+            color: var(--primary-purple);
+        }
+        
+        .icon-coral {
+            background: rgba(255, 82, 82, 0.1);
+            color: var(--accent-coral);
+        }
+        
+        .icon-gold {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--accent-gold);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .appointment-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .appointment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        
+        .appointment-details {
+            flex: 1;
+        }
+        
+        .appointment-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .appointment-time {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .appointment-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-confirmed {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #FFC107;
+        }
+        
+        .btn-logout {
+            background: var(--gradient-2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 82, 82, 0.3);
+        }
+        
+        .btn-primary-custom {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+        
         /* Healthcare Background Animation */
         .healthcare-bg {
             position: absolute;
@@ -830,12 +1158,33 @@
             .lottie-title {
                 font-size: 1.2rem;
             }
+            
+            .dashboard-sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .sidebar-menu span {
+                display: none;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .dashboard-main {
+                padding: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Auth Section -->
-    <section class="auth-section">
+    <section class="auth-section" id="auth-section">
         <div class="healthcare-bg" id="healthcareBg"></div>
         <div class="container">
             <div class="auth-container animate__animated animate__fadeIn">
@@ -844,6 +1193,27 @@
                     
                     <!-- Sign In Form -->
                     <form id="signin-form">
+                        <div class="form-group">
+                            <label class="form-label">I am a</label>
+                            <div class="role-selection">
+                                <div class="role-card" data-role="patient">
+                                    <div class="role-icon">
+                                        <i class="fas fa-user-injured"></i>
+                                    </div>
+                                    <div class="role-title">Patient</div>
+                                    <div class="role-description">Access healthcare services</div>
+                                </div>
+                                <div class="role-card" data-role="doctor">
+                                    <div class="role-icon">
+                                        <i class="fas fa-user-md"></i>
+                                    </div>
+                                    <div class="role-title">Doctor</div>
+                                    <div class="role-description">Provide healthcare services</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="user-role" name="user-role" required>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="signin-email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="signin-email" placeholder="Enter your email" required>
@@ -855,7 +1225,7 @@
                         </div>
                         <button type="submit" class="btn-auth">Sign In</button>
                         <div class="auth-links">
-                            <a href="./forgot_password.html" id="forgot-password">Forgot your password?</a>
+                            <a href="#" id="forgot-password">Forgot your password?</a>
                         </div>
                     </form>
                     
@@ -894,6 +1264,322 @@
             </div>
         </div>
     </section>
+
+    <!-- Patient Dashboard -->
+    <div class="dashboard" id="patient-dashboard">
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h2 class="mb-0 me-3">Swasthyasetu</h2>
+                        <span class="badge bg-primary">Patient Portal</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span id="patient-name">John Doe</span>
+                        </div>
+                        <button class="btn btn-logout" id="patient-logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="dashboard-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <h4>John Doe</h4>
+                        <p>Patient</p>
+                    </div>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> <span>Appointments</span></a></li>
+                    <li><a href="#"><i class="fas fa-file-medical"></i> <span>Medical Records</span></a></li>
+                    <li><a href="#"><i class="fas fa-pills"></i> <span>Medications</span></a></li>
+                    <li><a href="#"><i class="fas fa-heartbeat"></i> <span>Health Tracking</span></a></li>
+                    <li><a href="#"><i class="fas fa-comments"></i> <span>Messages</span></a></li>
+                    <li><a href="#"><i class="fas fa-user-cog"></i> <span>Settings</span></a></li>
+                </ul>
+            </div>
+            
+            <div class="dashboard-main">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Upcoming Appointments</div>
+                                <div class="stat-value">2</div>
+                            </div>
+                            <div class="card-icon icon-teal">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Prescriptions</div>
+                                <div class="stat-value">3</div>
+                            </div>
+                            <div class="card-icon icon-purple">
+                                <i class="fas fa-prescription-bottle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Health Reports</div>
+                                <div class="stat-value">5</div>
+                            </div>
+                            <div class="card-icon icon-coral">
+                                <i class="fas fa-file-medical-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Upcoming Appointments</h3>
+                        <button class="btn btn-primary-custom">Book New</button>
+                    </div>
+                    
+                    <ul class="appointment-list">
+                        <li class="appointment-item">
+                            <div class="appointment-avatar">DR</div>
+                            <div class="appointment-details">
+                                <div class="appointment-name">Dr. Robert Smith</div>
+                                <div class="appointment-time">Monday, 10:30 AM - Cardiology</div>
+                            </div>
+                            <div class="appointment-status status-confirmed">Confirmed</div>
+                        </li>
+                        <li class="appointment-item">
+                            <div class="appointment-avatar">MJ</div>
+                            <div class="appointment-details">
+                                <div class="appointment-name">Dr. Mary Johnson</div>
+                                <div class="appointment-time">Wednesday, 2:15 PM - Dermatology</div>
+                            </div>
+                            <div class="appointment-status status-pending">Pending</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Health Reports</h3>
+                        <a href="#" class="text-primary">View All</a>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Doctor</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Oct 12, 2023</td>
+                                    <td>Blood Test</td>
+                                    <td>Dr. Robert Smith</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 5, 2023</td>
+                                    <td>X-Ray</td>
+                                    <td>Dr. Emily Davis</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Sep 28, 2023</td>
+                                    <td>ECG</td>
+                                    <td>Dr. Robert Smith</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Dashboard -->
+    <div class="dashboard" id="doctor-dashboard">
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h2 class="mb-0 me-3">Swasthyasetu</h2>
+                        <span class="badge bg-primary">Doctor Portal</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span id="doctor-name">Dr. Robert Smith</span>
+                        </div>
+                        <button class="btn btn-logout" id="doctor-logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="dashboard-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar">RS</div>
+                    <div class="user-info">
+                        <h4>Dr. Robert Smith</h4>
+                        <p>Cardiologist</p>
+                    </div>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> <span>Schedule</span></a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> <span>Patients</span></a></li>
+                    <li><a href="#"><i class="fas fa-file-medical"></i> <span>Medical Records</span></a></li>
+                    <li><a href="#"><i class="fas fa-prescription"></i> <span>Prescriptions</span></a></li>
+                    <li><a href="#"><i class="fas fa-comments"></i> <span>Messages</span></a></li>
+                    <li><a href="#"><i class="fas fa-user-cog"></i> <span>Settings</span></a></li>
+                </ul>
+            </div>
+            
+            <div class="dashboard-main">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Today's Appointments</div>
+                                <div class="stat-value">8</div>
+                            </div>
+                            <div class="card-icon icon-teal">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Total Patients</div>
+                                <div class="stat-value">142</div>
+                            </div>
+                            <div class="card-icon icon-purple">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-label">Pending Reports</div>
+                                <div class="stat-value">5</div>
+                            </div>
+                            <div class="card-icon icon-coral">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Today's Schedule</h3>
+                        <button class="btn btn-primary-custom">Manage Schedule</button>
+                    </div>
+                    
+                    <ul class="appointment-list">
+                        <li class="appointment-item">
+                            <div class="appointment-avatar">JD</div>
+                            <div class="appointment-details">
+                                <div class="appointment-name">John Doe</div>
+                                <div class="appointment-time">9:00 AM - Follow-up</div>
+                            </div>
+                            <div class="appointment-status status-confirmed">Confirmed</div>
+                        </li>
+                        <li class="appointment-item">
+                            <div class="appointment-avatar">AS</div>
+                            <div class="appointment-details">
+                                <div class="appointment-name">Alice Smith</div>
+                                <div class="appointment-time">10:30 AM - Consultation</div>
+                            </div>
+                            <div class="appointment-status status-confirmed">Confirmed</div>
+                        </li>
+                        <li class="appointment-item">
+                            <div class="appointment-avatar">MJ</div>
+                            <div class="appointment-details">
+                                <div class="appointment-name">Michael Johnson</div>
+                                <div class="appointment-time">12:00 PM - New Patient</div>
+                            </div>
+                            <div class="appointment-status status-pending">Pending</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Patients</h3>
+                        <a href="#" class="text-primary">View All</a>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Last Visit</th>
+                                    <th>Condition</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>Oct 12, 2023</td>
+                                    <td>Hypertension</td>
+                                    <td><span class="badge bg-success">Stable</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Alice Smith</td>
+                                    <td>Oct 10, 2023</td>
+                                    <td>Arrhythmia</td>
+                                    <td><span class="badge bg-warning">Under Treatment</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Robert Brown</td>
+                                    <td>Oct 5, 2023</td>
+                                    <td>Coronary Artery Disease</td>
+                                    <td><span class="badge bg-success">Recovering</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -1005,6 +1691,24 @@
             // Call the function to create background elements
             createHealthcareBackground();
             
+            // Role selection functionality
+            const roleCards = document.querySelectorAll('.role-card');
+            const userRoleInput = document.getElementById('user-role');
+            
+            roleCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    roleCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    
+                    // Set the hidden input value
+                    const role = card.getAttribute('data-role');
+                    userRoleInput.value = role;
+                });
+            });
+            
             // Password visibility toggle
             function setupPasswordToggle(passwordId, toggleId) {
                 const passwordInput = document.getElementById(passwordId);
@@ -1025,20 +1729,39 @@
             
             setupPasswordToggle('signin-password', 'signin-password-toggle');
             
-            // Form validation
+            // Form validation and role-based redirection
             document.getElementById('signin-form').addEventListener('submit', (e) => {
                 e.preventDefault();
                 
                 const email = document.getElementById('signin-email').value;
                 const password = document.getElementById('signin-password').value;
+                const role = document.getElementById('user-role').value;
                 
-                if (email && password) {
+                if (email && password && role) {
                     // Simulate successful sign-in
-                    alert('Sign in successful! Redirecting to dashboard...');
-                    // In a real app, you would redirect to the dashboard
-                    // window.location.href = 'dashboard.html';
+                    if (role === 'patient') {
+                        document.getElementById('auth-section').style.display = 'none';
+                        document.getElementById('patient-dashboard').style.display = 'block';
+                        
+                        // Update patient name based on email (simulation)
+                        const patientName = email.split('@')[0];
+                        document.getElementById('patient-name').textContent = patientName;
+                        
+                        // Initialize patient dashboard
+                        initializePatientDashboard();
+                    } else if (role === 'doctor') {
+                        document.getElementById('auth-section').style.display = 'none';
+                        document.getElementById('doctor-dashboard').style.display = 'block';
+                        
+                        // Update doctor name based on email (simulation)
+                        const doctorName = "Dr. " + email.split('@')[0];
+                        document.getElementById('doctor-name').textContent = doctorName;
+                        
+                        // Initialize doctor dashboard
+                        initializeDoctorDashboard();
+                    }
                 } else {
-                    alert('Please fill in all fields');
+                    alert('Please select your role and fill in all fields');
                 }
             });
             
@@ -1047,7 +1770,36 @@
                 alert('Google login would be implemented here');
             });
             
-           
+            // Logout functionality
+            document.getElementById('patient-logout').addEventListener('click', () => {
+                document.getElementById('patient-dashboard').style.display = 'none';
+                document.getElementById('auth-section').style.display = 'flex';
+                document.getElementById('signin-form').reset();
+                // Reset role selection
+                roleCards.forEach(c => c.classList.remove('selected'));
+                userRoleInput.value = '';
+            });
+            
+            document.getElementById('doctor-logout').addEventListener('click', () => {
+                document.getElementById('doctor-dashboard').style.display = 'none';
+                document.getElementById('auth-section').style.display = 'flex';
+                document.getElementById('signin-form').reset();
+                // Reset role selection
+                roleCards.forEach(c => c.classList.remove('selected'));
+                userRoleInput.value = '';
+            });
+            
+            // Initialize Patient Dashboard
+            function initializePatientDashboard() {
+                // Add any patient-specific initialization here
+                console.log('Patient Dashboard Initialized');
+            }
+            
+            // Initialize Doctor Dashboard
+            function initializeDoctorDashboard() {
+                // Add any doctor-specific initialization here
+                console.log('Doctor Dashboard Initialized');
+            }
             
             // GSAP Animations
             gsap.from(".auth-container", {
