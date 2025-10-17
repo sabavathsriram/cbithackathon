@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Swasthyasetu</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <style>
+        :root {
+            --primary-teal: #00BCD4;
+            --primary-purple: #7B1FA2;
+            --accent-coral: #FF5252;
+            --accent-gold: #FFC107;
+            --neutral-light: #f5f7fa;
+            --neutral-dark: #263238;
+            --text-primary: #263238;
+            --text-secondary: #546E7A;
+            --gradient-1: linear-gradient(135deg, #00BCD4 0%, #7B1FA2 100%);
+            --gradient-2: linear-gradient(135deg, #FF5252 0%, #FFC107 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--neutral-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Auth Section */
+        .auth-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(123, 31, 162, 0.05) 100%);
+            position: relative;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .auth-section::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 188, 212, 0.1) 0%, rgba(123, 31, 162, 0.05) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .auth-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 82, 82, 0.1) 0%, rgba(255, 193, 7, 0.05) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 500px;
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            transform: translateZ(0);
+        }
+        
+        .auth-form-container {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            order: 1;
+        }
+        
+        .auth-animation {
+            flex: 1;
+            background: var(--gradient-1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            order: 2;
+        }
+        
+        .auth-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .auth-animation-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2);
+            outline: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 43px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary-teal);
+        }
+        
+        .btn-auth {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+        
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-auth:hover::before {
+            width: 100%;
+        }
+        
+        .btn-auth:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+        }
+        
+        .btn-google {
+            background-color: #DB4437;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(219, 68, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-google::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-google:hover::before {
+            width: 100%;
+        }
+        
+        .btn-google:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(219, 68, 55, 0.4);
+        }
+        
+        .btn-google i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--text-secondary);
+        }
+        
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #eee;
+        }
+        
+        .auth-divider span {
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .auth-links a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-links a:hover {
+            color: var(--primary-purple);
+            text-decoration: underline;
+        }
+        
+        /* Healthcare Background Animation */
+        .healthcare-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .healthcare-element {
+            position: absolute;
+            opacity: 0.7;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        .heartbeat {
+            width: 60px;
+            height: 30px;
+            border: 3px solid var(--primary-teal);
+            border-top: none;
+            border-right: none;
+            border-radius: 0 0 0 30px;
+            transform: rotate(45deg);
+        }
+        
+        .cross {
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+        
+        .cross::before, .cross::after {
+            content: '';
+            position: absolute;
+            background-color: var(--accent-coral);
+        }
+        
+        .cross::before {
+            width: 100%;
+            height: 4px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+        
+        .cross::after {
+            width: 4px;
+            height: 100%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .pill {
+            width: 40px;
+            height: 15px;
+            background-color: var(--accent-gold);
+            border-radius: 15px;
+        }
+        
+        .stethoscope {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--primary-purple);
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .stethoscope::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--primary-purple);
+            border-radius: 50%;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .stethoscope::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--primary-purple);
+            border-radius: 50%;
+            top: -15px;
+            right: -5px;
+        }
+        
+        .syringe {
+            width: 50px;
+            height: 10px;
+            background-color: var(--primary-teal);
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .syringe::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--primary-teal);
+            border-radius: 50%;
+            left: -7px;
+            top: -2.5px;
+        }
+        
+        .syringe::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 15px;
+            background-color: var(--primary-teal);
+            right: -5px;
+            top: -2.5px;
+        }
+        
+        .medical-bag {
+            width: 40px;
+            height: 35px;
+            background-color: var(--accent-gold);
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .medical-bag::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 5px;
+            background-color: var(--accent-gold);
+            top: -5px;
+            left: 12.5px;
+        }
+        
+        .medical-bag::after {
+            content: '+';
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            top: 5px;
+            left: 13px;
+        }
+        
+        .healthcare-worker {
+            width: 40px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .healthcare-worker::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary-purple);
+            top: 0;
+            left: 5px;
+        }
+        
+        .healthcare-worker::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 35px;
+            background-color: var(--primary-purple);
+            border-radius: 10px 10px 0 0;
+            top: 25px;
+            left: 0;
+        }
+        
+        .ambulance {
+            width: 60px;
+            height: 30px;
+            background-color: var(--accent-coral);
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .ambulance::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background-color: var(--accent-coral);
+            top: -15px;
+            left: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .ambulance::after {
+            content: '+';
+            position: absolute;
+            color: white;
+            font-size: 16px;
+            top: 5px;
+            left: 20px;
+        }
+        
+        .hospital {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-teal);
+            position: relative;
+        }
+        
+        .hospital::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 10px;
+            background-color: var(--primary-teal);
+            top: 20px;
+            left: 0;
+        }
+        
+        .hospital::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 50px;
+            background-color: var(--primary-teal);
+            top: 0;
+            left: 20px;
+        }
+        
+        .rural-house {
+            width: 50px;
+            height: 40px;
+            background-color: var(--accent-gold);
+            position: relative;
+        }
+        
+        .rural-house::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 20px solid var(--primary-purple);
+            top: -20px;
+            left: 0;
+        }
+        
+        .rural-house::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background-color: var(--primary-teal);
+            top: 10px;
+            left: 17.5px;
+        }
+        
+        .dna {
+            width: 40px;
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dna::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-teal);
+            left: 10px;
+            border-radius: 2px;
+        }
+        
+        .dna::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-teal);
+            right: 10px;
+            border-radius: 2px;
+        }
+        
+        .dna-strand {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dna-strand::before,
+        .dna-strand::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-coral);
+        }
+        
+        .dna-strand:nth-child(1)::before { top: 10%; left: 8px; }
+        .dna-strand:nth-child(1)::after { top: 10%; right: 8px; }
+        
+        .dna-strand:nth-child(2)::before { top: 25%; left: 24px; }
+        .dna-strand:nth-child(2)::after { top: 25%; right: 24px; }
+        
+        .dna-strand:nth-child(3)::before { top: 40%; left: 8px; }
+        .dna-strand:nth-child(3)::after { top: 40%; right: 8px; }
+        
+        .dna-strand:nth-child(4)::before { top: 55%; left: 24px; }
+        .dna-strand:nth-child(4)::after { top: 55%; right: 24px; }
+        
+        .dna-strand:nth-child(5)::before { top: 70%; left: 8px; }
+        .dna-strand:nth-child(5)::after { top: 70%; right: 8px; }
+        
+        .dna-strand:nth-child(6)::before { top: 85%; left: 24px; }
+        .dna-strand:nth-child(6)::after { top: 85%; right: 24px; }
+        
+        .microscope {
+            width: 40px;
+            height: 50px;
+            position: relative;
+        }
+        
+        .microscope::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 5px;
+            background-color: var(--primary-purple);
+            top: 10px;
+            left: 5px;
+            border-radius: 2px;
+        }
+        
+        .microscope::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background-color: var(--primary-purple);
+            top: 15px;
+            left: 12.5px;
+            border-radius: 2px;
+        }
+        
+        .microscope-base {
+            position: absolute;
+            width: 35px;
+            height: 5px;
+            background-color: var(--primary-purple);
+            bottom: 5px;
+            left: 2.5px;
+            border-radius: 2px;
+        }
+        
+        .microscope-stand {
+            position: absolute;
+            width: 5px;
+            height: 30px;
+            background-color: var(--primary-purple);
+            bottom: 5px;
+            left: 17.5px;
+            border-radius: 2px;
+        }
+        
+        .brain {
+            width: 50px;
+            height: 40px;
+            background-color: var(--primary-purple);
+            border-radius: 25px 25px 20px 20px;
+            position: relative;
+        }
+        
+        .brain::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            background-color: var(--primary-purple);
+            border-radius: 20px 20px 15px 15px;
+            top: 5px;
+            left: 5px;
+        }
+        
+        .brain::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background-color: var(--primary-purple);
+            border-radius: 15px 15px 10px 10px;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .robot {
+            width: 40px;
+            height: 50px;
+            position: relative;
+        }
+        
+        .robot-head {
+            position: absolute;
+            width: 30px;
+            height: 25px;
+            background-color: var(--primary-teal);
+            border-radius: 5px;
+            top: 0;
+            left: 5px;
+        }
+        
+        .robot-body {
+            position: absolute;
+            width: 35px;
+            height: 25px;
+            background-color: var(--primary-teal);
+            border-radius: 5px;
+            top: 25px;
+            left: 2.5px;
+        }
+        
+        .robot-eye {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            top: 8px;
+        }
+        
+        .robot-eye.left { left: 8px; }
+        .robot-eye.right { right: 8px; }
+        
+        .robot-antenna {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background-color: var(--primary-teal);
+            top: -8px;
+        }
+        
+        .robot-antenna.left { left: 10px; }
+        .robot-antenna.right { right: 10px; }
+        
+        .robot-antenna::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent-coral);
+            border-radius: 50%;
+            top: -4px;
+            left: -1px;
+        }
+        
+        /* Lottie Animation Container */
+        .lottie-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lottie-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .animation-fallback {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            display: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+            
+            .auth-form-container {
+                order: 1;
+                padding: 30px 25px;
+            }
+            
+            .auth-animation {
+                order: 2;
+                padding: 30px;
+                min-height: 300px;
+            }
+            
+            .lottie-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <section class="auth-section">
+        <div class="healthcare-bg" id="healthcareBg"></div>
+        <div class="container">
+            <div class="auth-container animate__animated animate__fadeIn">
+                <div class="auth-form-container">
+                    <h2 class="auth-title">Sign In</h2>
+                    
+                    <!-- Sign In Form -->
+                    <form id="signin-form">
+                        <div class="form-group">
+                            <label for="signin-email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="signin-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="signin-password" placeholder="Enter your password" required>
+                            <i class="fas fa-eye password-toggle" id="signin-password-toggle"></i>
+                        </div>
+                        <button type="submit" class="btn-auth">Sign In</button>
+                        <div class="auth-links">
+                            <a href="./forgot_password.html" id="forgot-password">Forgot your password?</a>
+                        </div>
+                    </form>
+                    
+                    <div class="auth-divider">
+                        <span>or continue with</span>
+                    </div>
+                    
+                    <button class="btn-google" id="google-login">
+                        <i class="fab fa-google"></i> Sign in with Google
+                    </button>
+                    
+                    <div class="auth-links">
+                        Don't have an account? <a href="signup.html">Sign Up</a>
+                    </div>
+                </div>
+                
+                <div class="auth-animation">
+                    <div class="auth-animation-content">
+                        <div class="lottie-container">
+                            <h3 class="lottie-title">AI-Powered Healthcare</h3>
+                            <lottie-player 
+                                src="https://assets5.lottiefiles.com/packages/lf20_V9t630.json" 
+                                background="transparent" 
+                                speed="1" 
+                                style="width: 320px; height: 320px;" 
+                                loop 
+                                autoplay>
+                            </lottie-player>
+                            <div class="animation-fallback">
+                                <i class="fas fa-brain fa-3x mb-3"></i>
+                                <p>Access your intelligent healthcare platform</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create healthcare background elements
+            function createHealthcareBackground() {
+                const bgContainer = document.getElementById('healthcareBg');
+                const elements = ['heartbeat', 'cross', 'pill', 'stethoscope', 'syringe', 'medical-bag', 'healthcare-worker', 'ambulance', 'hospital', 'rural-house', 'dna', 'microscope', 'brain', 'robot'];
+                const elementCount = 70;
+                
+                for (let i = 0; i < elementCount; i++) {
+                    const element = document.createElement('div');
+                    const elementType = elements[Math.floor(Math.random() * elements.length)];
+                    element.classList.add('healthcare-element', elementType);
+                    
+                    // Add special elements for DNA, microscope, brain, and robot
+                    if (elementType === 'dna') {
+                        for (let j = 1; j <= 6; j++) {
+                            const strand = document.createElement('div');
+                            strand.classList.add('dna-strand');
+                            element.appendChild(strand);
+                        }
+                    } else if (elementType === 'microscope') {
+                        const base = document.createElement('div');
+                        base.classList.add('microscope-base');
+                        element.appendChild(base);
+                        
+                        const stand = document.createElement('div');
+                        stand.classList.add('microscope-stand');
+                        element.appendChild(stand);
+                    } else if (elementType === 'robot') {
+                        const head = document.createElement('div');
+                        head.classList.add('robot-head');
+                        element.appendChild(head);
+                        
+                        const body = document.createElement('div');
+                        body.classList.add('robot-body');
+                        element.appendChild(body);
+                        
+                        const leftEye = document.createElement('div');
+                        leftEye.classList.add('robot-eye', 'left');
+                        head.appendChild(leftEye);
+                        
+                        const rightEye = document.createElement('div');
+                        rightEye.classList.add('robot-eye', 'right');
+                        head.appendChild(rightEye);
+                        
+                        const leftAntenna = document.createElement('div');
+                        leftAntenna.classList.add('robot-antenna', 'left');
+                        head.appendChild(leftAntenna);
+                        
+                        const rightAntenna = document.createElement('div');
+                        rightAntenna.classList.add('robot-antenna', 'right');
+                        head.appendChild(rightAntenna);
+                    }
+                    
+                    // Random position
+                    element.style.left = `${Math.random() * 100}%`;
+                    element.style.top = `${Math.random() * 100}%`;
+                    
+                    // Random size
+                    const scale = Math.random() * 1.8 + 1.0;
+                    element.style.transform = `scale(${scale})`;
+                    
+                    // Random rotation
+                    const rotation = Math.random() * 360;
+                    element.style.transform += ` rotate(${rotation}deg)`;
+                    
+                    bgContainer.appendChild(element);
+                    
+                    // Animate element with floating motion
+                    const moveX = Math.random() * 600 - 300;
+                    const moveY = Math.random() * 600 - 300;
+                    const duration = Math.random() * 12 + 6;
+                    
+                    gsap.to(element, {
+                        x: moveX,
+                        y: moveY,
+                        duration: duration,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    });
+                    
+                    // Add rotation animation
+                    gsap.to(element, {
+                        rotation: rotation + (Math.random() > 0.5 ? 180 : -180),
+                        duration: Math.random() * 20 + 10,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    });
+                    
+                    // Add opacity pulsing
+                    gsap.to(element, {
+                        opacity: Math.random() * 0.5 + 0.4,
+                        duration: Math.random() * 2 + 1,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    });
+                }
+            }
+            
+            // Call the function to create background elements
+            createHealthcareBackground();
+            
+            // Password visibility toggle
+            function setupPasswordToggle(passwordId, toggleId) {
+                const passwordInput = document.getElementById(passwordId);
+                const toggleIcon = document.getElementById(toggleId);
+                
+                toggleIcon.addEventListener('click', () => {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        toggleIcon.classList.remove('fa-eye');
+                        toggleIcon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        toggleIcon.classList.remove('fa-eye-slash');
+                        toggleIcon.classList.add('fa-eye');
+                    }
+                });
+            }
+            
+            setupPasswordToggle('signin-password', 'signin-password-toggle');
+            
+            // Form validation
+            document.getElementById('signin-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('signin-email').value;
+                const password = document.getElementById('signin-password').value;
+                
+                if (email && password) {
+                    // Simulate successful sign-in
+                    alert('Sign in successful! Redirecting to dashboard...');
+                    // In a real app, you would redirect to the dashboard
+                    // window.location.href = 'dashboard.html';
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            // Google login button
+            document.getElementById('google-login').addEventListener('click', () => {
+                alert('Google login would be implemented here');
+            });
+            
+           
+            
+            // GSAP Animations
+            gsap.from(".auth-container", {
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                delay: 0.2,
+                ease: "power3.out"
+            });
+        });
+    </script>
+</body>
+</html>

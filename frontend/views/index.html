@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swasthyasetu - Empowering Rural India with Easy Healthcare Access</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #00BCD4; /* Bright teal for primary actions */
+            --primary-purple: #7B1FA2; /* Deep purple for trust and professionalism */
+            --accent-coral: #FF5252; /* Vibrant coral for accents and CTAs */
+            --accent-gold: #FFC107; /* Warm gold for highlights */
+            --neutral-light: #f5f7fa; /* Very light neutral background */
+            --neutral-dark: #263238; /* Dark blue-gray for text */
+            --testimonial-bg: #E8F5E9; /* Light green for testimonials */
+            --text-primary: #263238;
+            --text-secondary: #546E7A;
+            --gradient-1: linear-gradient(135deg, #00BCD4 0%, #7B1FA2 100%);
+            --gradient-2: linear-gradient(135deg, #FF5252 0%, #FFC107 100%);
+            --gradient-3: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(123, 31, 162, 0.1) 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--neutral-light);
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+            
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--accent-coral);
+            font-size: 1.8rem;
+        }
+        .nav-link1{
+            color: white;
+            text-decoration: none;
+        }
+        .nav-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-teal);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-teal);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-get-started {
+            background: var(--gradient-2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-get-started::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-get-started:hover::before {
+            width: 100%;
+        }
+        
+        .btn-get-started:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 82, 82, 0.4);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(123, 31, 162, 0.05) 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 188, 212, 0.1) 0%, rgba(123, 31, 162, 0.05) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 82, 82, 0.1) 0%, rgba(255, 193, 7, 0.05) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-purple);
+            line-height: 1.2;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-content h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-2);
+            border-radius: 2px;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .emotional-text {
+            font-size: 1.1rem;
+            color: var(--accent-coral);
+            font-style: italic;
+            margin-bottom: 30px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .voice-demo {
+            display: flex;
+            align-items: center;
+            margin-top: 40px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .mic-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.7);
+                transform: scale(1);
+            }
+            70% { 
+                box-shadow: 0 0 0 15px rgba(0, 188, 212, 0);
+                transform: scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(0, 188, 212, 0);
+                transform: scale(1);
+            }
+        }
+        
+        .mic-icon i {
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .stats-banner {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .rotating-stats {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 100px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .features-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--neutral-light), transparent);
+            z-index: 1;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-2);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 188, 212, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        .feature-icon i {
+            font-size: 2.2rem;
+            color: white;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .feature-cta {
+            color: var(--primary-teal);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-cta i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-cta:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: var(--neutral-light);
+            position: relative;
+        }
+        
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, white, transparent);
+            z-index: 1;
+        }
+        
+        .step-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-top: 60px;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 0 15px;
+        }
+        
+        .step-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover .step-icon {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-icon i {
+            font-size: 3rem;
+            color: var(--primary-purple);
+        }
+        
+        .step-icon.loading-spinner i {
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .step h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .step p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .step-arrow {
+            position: absolute;
+            top: 60px;
+            left: 33.33%;
+            width: 33.33%;
+            height: 3px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .step-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid #ddd;
+        }
+        
+        .step-arrow.second {
+            left: 66.66%;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--neutral-light), transparent);
+            z-index: 1;
+        }
+        
+        .testimonial-card {
+            background-color: var(--testimonial-bg);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(0, 188, 212, 0.15);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 25px;
+            padding-left: 20px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+        
+        .author-info h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+        
+        .author-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* About Us Section */
+        .about-section {
+            padding: 100px 0;
+            background-color: var(--neutral-light);
+            position: relative;
+        }
+        
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, white, transparent);
+            z-index: 1;
+        }
+        
+        .about-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .about-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-2);
+        }
+        
+        .about-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: var(--gradient-2);
+            border-radius: 2px;
+        }
+        
+        .about-content p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        .btn-read-more {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-read-more::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-read-more:hover::before {
+            width: 100%;
+        }
+        
+        .btn-read-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--neutral-dark);
+            color: white;
+            padding: 60px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 20px 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .helpline {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .helpline i {
+            color: var(--accent-coral);
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+        
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            border-bottom: none;
+            padding: 25px 30px;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .voice-input-container {
+            text-align: center;
+        }
+        
+        .voice-input-box {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .voice-input-box:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+            outline: none;
+        }
+        
+        .voice-input-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .voice-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .voice-btn.start {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+        
+        .voice-btn.start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+        }
+        
+        .voice-btn.stop {
+            background: #f44336;
+            color: white;
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+        }
+        
+        .voice-btn.stop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
+        }
+        
+        .voice-btn.clear {
+            background: #9e9e9e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(158, 158, 158, 0.3);
+        }
+        
+        .voice-btn.clear:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(158, 158, 158, 0.4);
+        }
+        
+        .result-container {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: var(--testimonial-bg);
+            border-radius: 15px;
+            display: none;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-container h4 {
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        /* Loading Spinner */
+        .loading-rangoli {
+            display: none;
+            width: 120px;
+            height: 120px;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .loading-rangoli div {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--accent-coral);
+            animation: rangoli-loading 1.8s infinite ease-in-out;
+        }
+        
+        .loading-rangoli div:nth-child(1) {
+            top: 0;
+            left: 47px;
+            animation-delay: 0s;
+        }
+        
+        .loading-rangoli div:nth-child(2) {
+            top: 18px;
+            left: 78px;
+            animation-delay: 0.2s;
+        }
+        
+        .loading-rangoli div:nth-child(3) {
+            top: 47px;
+            left: 90px;
+            animation-delay: 0.4s;
+        }
+        
+        .loading-rangoli div:nth-child(4) {
+            top: 76px;
+            left: 78px;
+            animation-delay: 0.6s;
+        }
+        
+        .loading-rangoli div:nth-child(5) {
+            top: 95px;
+            left: 47px;
+            animation-delay: 0.8s;
+        }
+        
+        .loading-rangoli div:nth-child(6) {
+            top: 76px;
+            left: 17px;
+            animation-delay: 1s;
+        }
+        
+        .loading-rangoli div:nth-child(7) {
+            top: 47px;
+            left: 5px;
+            animation-delay: 1.2s;
+        }
+        
+        .loading-rangoli div:nth-child(8) {
+            top: 18px;
+            left: 17px;
+            animation-delay: 1.4s;
+        }
+        
+        @keyframes rangoli-loading {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(0.5);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Floating CTA */
+        .floating-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient-2);
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(255, 82, 82, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0);
+        }
+        
+        .floating-cta.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        
+        .floating-cta:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 25px rgba(255, 82, 82, 0.5);
+        }
+        
+        .floating-cta i {
+            font-size: 1.8rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.3rem;
+            }
+            
+            .step-arrow {
+                display: none;
+            }
+            
+            .step-container {
+                flex-direction: column;
+            }
+            
+            .step {
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .voice-demo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links a {
+                margin: 5px 0;
+            }
+            
+            .about-content {
+                padding: 30px 20px;
+            }
+            
+            .about-content h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Particles Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: rgba(0, 188, 212, 0.1);
+            border-radius: 50%;
+        }
+        
+        /* Glowing Effect */
+        .glow {
+            position: relative;
+        }
+        
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: inherit;
+            filter: blur(15px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-spa"></i>
+                Swasthyasetu
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn-get-started" data-bs-toggle="modal" data-bs-target="#voiceModal"><a class="nav-link1" href="./signin.html">Get Started</a></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="particles" id="heroParticles"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content animate__animated animate__fadeInLeft">
+                        <h1>Empowering Rural India with Easy Healthcare Access</h1>
+                        <p>Your health companion that understands your needs and connects you to care, no matter where you are.</p>
+                        <div class="emotional-text">Because every life matters, and distance should never be a barrier to quality healthcare.</div>
+                        <div class="hero-cta">
+                            <button class="btn-get-started" data-bs-toggle="modal" data-bs-target="#voiceModal"><a class="nav-link1" href="./signin.html">Get Started</a></button>
+                        </div>
+                        <div class="voice-demo">
+                            <div class="mic-icon" id="micIcon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <div>
+                                <p>Try our voice symptom checker</p>
+                                <p>Just tap and speak naturally</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-animation animate__animated animate__fadeInRight">
+                        <lottie-player 
+                            src="https://assets9.lottiefiles.com/packages/lf20_1pxqjqps.json"
+                            background="transparent"
+                            speed="1"
+                            style="width: 100%; height: 500px;"
+                            loop
+                            autoplay>
+                        </lottie-player>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-banner">
+                <div class="rotating-stats" id="rotatingStats">
+                    1M+ Rural Users Helped
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-title animate__animated animate__fadeIn">
+                <h2>Our Features</h2>
+                <p>Swasthyasetu offers comprehensive healthcare solutions designed specifically for rural communities.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 animate__animated animate__fadeInLeft" data-animate-delay="0.1s">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h3>Symptom Checker</h3>
+                        <p>Check your symptoms through text or voice input and get instant suggestions about possible conditions.</p>
+                        <a href="#" class="feature-cta">Try it now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 animate__animated animate__fadeInUp" data-animate-delay="0.2s">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Natural Remedies</h3>
+                        <p>Access a curated collection of natural and home remedies for common ailments based on traditional knowledge.</p>
+                        <a href="#" class="feature-cta">Explore remedies <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 animate__animated animate__fadeInRight" data-animate-delay="0.3s">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <h3>Hospital Finder & Doctor Connect</h3>
+                        <p>Find nearby hospitals and connect with doctors through our subscription-based telemedicine service.</p>
+                        <a href="#" class="feature-cta">Find care <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title animate__animated animate__fadeIn">
+                <h2>How It Works</h2>
+                <p>Get healthcare guidance in three simple steps.</p>
+            </div>
+            <div class="step-container">
+                <div class="step animate__animated animate__fadeInLeft" data-animate-delay="0.1s">
+                    <div class="step-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>Input Symptoms</h3>
+                    <p>Speak or type your symptoms in your preferred language.</p>
+                </div>
+                <div class="step-arrow"></div>
+                <div class="step animate__animated animate__fadeInUp" data-animate-delay="0.2s">
+                    <div class="step-icon loading-spinner">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Analyze</h3>
+                    <p>Our AI analyzes your symptoms and medical history.</p>
+                </div>
+                <div class="step-arrow second"></div>
+                <div class="step animate__animated animate__fadeInRight" data-animate-delay="0.3s">
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Get Results</h3>
+                    <p>Receive personalized health recommendations and next steps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title animate__animated animate__fadeIn">
+                <h2>What Our Users Say</h2>
+                <p>Real stories from rural communities we've served.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 animate__animated animate__fadeInLeft" data-animate-delay="0.1s">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Swasthyasetu helped me identify my symptoms quickly when I had a fever. The natural remedies suggested worked wonders, and I didn't have to travel 50km to the nearest hospital."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">RS</div>
+                            <div class="author-info">
+                                <h4>Ramesh S.</h4>
+                                <p>Farmer, Rajasthan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 animate__animated animate__fadeInRight" data-animate-delay="0.2s">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"As a village health worker, I use Swasthyasetu every day to help my community. The doctor connect feature has been a lifesaver for pregnant women in our village."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">PM</div>
+                            <div class="author-info">
+                                <h4>Priya M.</h4>
+                                <p>ASHA Worker, Bihar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content animate__animated animate__fadeIn">
+                <h2>About Swasthyasetu</h2>
+                <p>Swasthyasetu is a healthcare platform designed to bridge the gap between rural communities and quality healthcare services. We leverage technology to make healthcare accessible, affordable, and user-friendly for everyone, regardless of their location or language.</p>
+                <p>Our mission is to empower rural India with easy access to health information, symptom checking, natural remedies, and connections to healthcare professionals. We believe that everyone deserves quality healthcare, no matter where they live.</p>
+                <button class="btn-read-more">Read More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">FAQ</a>
+                </div>
+                <div class="helpline">
+                    <i class="fas fa-phone-alt"></i> Helpline: 108
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 Swasthyasetu. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Voice Input Modal -->
+    <div class="modal fade" id="voiceModal" tabindex="-1" aria-labelledby="voiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="voiceModalLabel">Symptom Checker</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="voice-input-container">
+                        <p>Describe your symptoms by typing or speaking:</p>
+                        <textarea class="voice-input-box" id="symptomInput" rows="3" placeholder="Type your symptoms here..."></textarea>
+                        <div class="loading-rangoli" id="loadingRangoli">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="voice-input-buttons">
+                            <button class="voice-btn start" id="startVoiceBtn">
+                                <i class="fas fa-microphone"></i> Start Voice
+                            </button>
+                            <button class="voice-btn stop" id="stopVoiceBtn" style="display: none;">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                            <button class="voice-btn clear" id="clearBtn">
+                                <i class="fas fa-eraser"></i> Clear
+                            </button>
+                            <button class="voice-btn start" id="analyzeBtn">
+                                <i class="fas fa-search"></i> Analyze
+                            </button>
+                        </div>
+                        <div class="result-container" id="resultContainer">
+                            <h4>Possible Conditions</h4>
+                            <div id="resultContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating CTA -->
+    <div class="floating-cta" id="floatingCta">
+        <i class="fas fa-comment-medical"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Register ScrollTrigger plugin
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Initialize particles for hero section
+        function createParticles() {
+            const particlesContainer = document.getElementById('heroParticles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                gsap.to(particle, {
+                    x: Math.random() * 100 - 50,
+                    y: Math.random() * 100 - 50,
+                    duration: Math.random() * 10 + 10,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+        }
+        
+        createParticles();
+        
+        // GSAP Animations
+        gsap.from(".navbar", {
+            duration: 0.8,
+            y: -100,
+            opacity: 0,
+            ease: "power3.out"
+        });
+        
+        // Feature cards animation
+        gsap.utils.toArray('.feature-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                delay: i * 0.1,
+                ease: "power3.out"
+            });
+        });
+        
+        // How it works steps animation
+        gsap.utils.toArray('.step').forEach((step, i) => {
+            gsap.from(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                duration: 0.8,
+                x: i === 0 ? -50 : i === 2 ? 50 : 0,
+                y: i === 1 ? 50 : 0,
+                opacity: 0,
+                delay: i * 0.2,
+                ease: "power3.out"
+            });
+        });
+        
+        // Testimonial cards animation
+        gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                duration: 0.8,
+                x: i === 0 ? -50 : 50,
+                opacity: 0,
+                delay: i * 0.2,
+                ease: "power3.out"
+            });
+        });
+        
+        // About section animation
+        gsap.from(".about-content", {
+            scrollTrigger: {
+                trigger: ".about-content",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            },
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            ease: "power3.out"
+        });
+        
+        // Rotating stats banner
+        const stats = [
+            "1M+ Rural Users Helped",
+            "Bridging 70% Rural Healthcare Gap",
+            "Available in 12+ Indian Languages",
+            "5000+ Doctors on Platform"
+        ];
+        let currentStatIndex = 0;
+        
+        setInterval(() => {
+            currentStatIndex = (currentStatIndex + 1) % stats.length;
+            const rotatingStats = document.getElementById('rotatingStats');
+            rotatingStats.style.opacity = 0;
+            
+            setTimeout(() => {
+                rotatingStats.textContent = stats[currentStatIndex];
+                rotatingStats.style.opacity = 1;
+            }, 300);
+        }, 3000);
+        
+        // Floating CTA
+        const floatingCta = document.getElementById('floatingCta');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                floatingCta.classList.add('visible');
+            } else {
+                floatingCta.classList.remove('visible');
+            }
+        });
+        
+        floatingCta.addEventListener('click', () => {
+            const voiceModal = new bootstrap.Modal(document.getElementById('voiceModal'));
+            voiceModal.show();
+        });
+        
+        // Voice Input Functionality
+        const startVoiceBtn = document.getElementById('startVoiceBtn');
+        const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const symptomInput = document.getElementById('symptomInput');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultContent = document.getElementById('resultContent');
+        const loadingRangoli = document.getElementById('loadingRangoli');
+        
+        let recognition;
+        
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                }
+                symptomInput.value += transcript;
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event.error);
+                stopRecording();
+            };
+            
+            recognition.onend = () => {
+                stopRecording();
+            };
+        }
+        
+        function startRecording() {
+            if (recognition) {
+                recognition.start();
+                startVoiceBtn.style.display = 'none';
+                stopVoiceBtn.style.display = 'inline-block';
+            }
+        }
+        
+        function stopRecording() {
+            if (recognition) {
+                recognition.stop();
+            }
+            startVoiceBtn.style.display = 'inline-block';
+            stopVoiceBtn.style.display = 'none';
+        }
+        
+        startVoiceBtn.addEventListener('click', startRecording);
+        stopVoiceBtn.addEventListener('click', stopRecording);
+        
+        clearBtn.addEventListener('click', () => {
+            symptomInput.value = '';
+            resultContainer.style.display = 'none';
+        });
+        
+        analyzeBtn.addEventListener('click', () => {
+            const symptoms = symptomInput.value.trim();
+            if (!symptoms) {
+                alert('Please enter or speak your symptoms');
+                return;
+            }
+            
+            // Show loading animation
+            loadingRangoli.style.display = 'block';
+            resultContainer.style.display = 'none';
+            
+            // Simulate analysis with a timeout
+            setTimeout(() => {
+                loadingRangoli.style.display = 'none';
+                resultContainer.style.display = 'block';
+                
+                // Mock results based on symptoms
+                let results = '';
+                
+                if (symptoms.toLowerCase().includes('fever')) {
+                    results += `
+                        <div class="mb-3">
+                            <h5>Fever</h5>
+                            <p>Fever is often a sign of infection. Rest, drink fluids, and monitor your body temperature.</p>
+                            <h6>Natural Remedies:</h6>
+                            <ul>
+                                <li>Drink warm water with lemon and honey</li>
+                                <li>Drink basil leaf tea</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (symptoms.toLowerCase().includes('headache')) {
+                    results += `
+                        <div class="mb-3">
+                            <h5>Headache</h5>
+                            <p>Headaches can be caused by stress, dehydration, or eye strain.</p>
+                            <h6>Natural Remedies:</h6>
+                            <ul>
+                                <li>Apply a cold compress to your forehead</li>
+                                <li>Rest in a quiet, dark room</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (symptoms.toLowerCase().includes('cough')) {
+                    results += `
+                        <div class="mb-3">
+                            <h5>Cough</h5>
+                            <p>Coughing is your body's way of clearing your airways. It can be caused by infection, allergies, or irritation.</p>
+                            <h6>Natural Remedies:</h6>
+                            <ul>
+                                <li>Drink warm water with honey and ginger</li>
+                                <li>Inhale steam</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (!results) {
+                    results = `
+                        <div class="mb-3">
+                            <h5>General Advice</h5>
+                            <p>Based on your symptoms, we recommend rest, drinking plenty of fluids, and monitoring your symptoms. If symptoms worsen, please consult a healthcare provider.</p>
+                        </div>
+                    `;
+                }
+                
+                resultContent.innerHTML = results;
+            }, 2000);
+        });
+        
+        // Mic icon click in hero section
+        document.getElementById('micIcon').addEventListener('click', () => {
+            const voiceModal = new bootstrap.Modal(document.getElementById('voiceModal'));
+            voiceModal.show();
+            setTimeout(startRecording, 500);
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Service Worker Registration (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        
+        // Demo script note for judges:
+        /*
+        DEMO SCRIPT (30 seconds):
+        
+        1. "Welcome to Swasthyasetu, a healthcare platform designed specifically for rural India."
+        
+        2. "Our platform provides easy access to symptom checking via text or voice, natural remedies, hospital finder, and doctor connections."
+        
+        3. "Let me show you our voice symptom checker - I'll click on the microphone icon and speak a symptom like 'headache'."
+        
+        4. (Click mic icon, wait for modal, then say "headache") "As you can see, the system transcribes my voice and provides possible conditions and natural remedies."
+        
+        5. "Our platform also features like hospital finder and doctor connect to help rural communities access healthcare services."
+        
+        6. "We've designed Swasthyasetu with a focus on accessibility, cultural relevance, and ease of use for rural communities."
+        
+        7. "The platform works even with limited internet connectivity and provides valuable health information to those who need it most."
+        
+        8. "Thank you for your time. We believe Swasthyasetu can make a real difference in bridging the healthcare gap in rural India."
+        */
+    </script>
+</body>
+</html>

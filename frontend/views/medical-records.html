@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu - Medical Records</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            /* Professional Medical Color Theme */
+            --primary-color: #2E86AB; /* Professional Blue */
+            --secondary-color: #A23B72; /* Medical Purple */
+            --accent-color: #F18F01; /* Warm Orange */
+            --success-color: #06FFA5; /* Medical Green */
+            --light-color: #F8F9FA; /* Light Gray */
+            --dark-color: #2D3436; /* Dark Gray */
+            --text-color: #333;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: var(--card-shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .sidebar-logo i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-item:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-menu-item.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .topbar {
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .section-action {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .section-action:hover {
+            text-decoration: underline;
+        }
+        
+        .filter-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .filter-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .record-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .record-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .record-patient {
+            flex: 1;
+        }
+        
+        .record-patient-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .record-patient-id {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .record-date {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+        
+        .record-details {
+            margin-bottom: 15px;
+        }
+        
+        .record-detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .record-detail-label {
+            font-weight: 500;
+            color: var(--dark-color);
+            min-width: 150px;
+        }
+        
+        .record-detail-value {
+            color: #666;
+        }
+        
+        .record-diagnosis {
+            background-color: var(--light-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .record-diagnosis-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .record-diagnosis-title i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+        }
+        
+        .record-diagnosis-content {
+            color: #666;
+        }
+        
+        .record-treatment {
+            background-color: var(--light-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .record-treatment-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .record-treatment-title i {
+            margin-right: 8px;
+            color: var(--success-color);
+        }
+        
+        .record-treatment-content {
+            color: #666;
+        }
+        
+        .record-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .record-action-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .record-action-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .record-action-btn.primary:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .record-action-btn.secondary {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .record-action-btn.secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .record-action-btn.tertiary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .record-action-btn.tertiary:hover {
+            background-color: #8A2E5F;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination {
+            display: flex;
+            list-style: none;
+        }
+        
+        .page-item {
+            margin: 0 5px;
+        }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-link:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .record-header {
+                flex-direction: column;
+            }
+            
+            .record-date {
+                text-align: left;
+                margin-top: 5px;
+            }
+            
+            .record-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fas fa-heartbeat"></i> SwasthyaSetu
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <a href="index.html" class="sidebar-menu-item">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="appointments.html" class="sidebar-menu-item">
+                <i class="fas fa-calendar-alt"></i> Appointments
+            </a>
+            <a href="patients.html" class="sidebar-menu-item">
+                <i class="fas fa-users"></i> Patients
+            </a>
+            <a href="medical-records.html" class="sidebar-menu-item active">
+                <i class="fas fa-file-medical"></i> Medical Records
+            </a>
+            <a href="consultations.html" class="sidebar-menu-item">
+                <i class="fas fa-comments"></i> Consultations
+            </a>
+            <a href="earnings.html" class="sidebar-menu-item">
+                <i class="fas fa-chart-line"></i> Earnings
+            </a>
+            <a href="availability.html" class="sidebar-menu-item">
+                <i class="fas fa-clock"></i> Availability
+            </a>
+            <a href="settings.html" class="sidebar-menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <h1 class="topbar-title">Medical Records</h1>
+            <div class="topbar-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="profile-dropdown">
+                    <img src="https://i.imgur.com/1ZqZcFj.jpg" alt="Dr. Rajesh Sharma" class="profile-image">
+                    <div>
+                        <div class="fw-bold">Dr. Rajesh Sharma</div>
+                        <div class="small text-muted">General Medicine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" placeholder="Search by patient name or ID...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date Range</label>
+                    <input type="date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Record Type</label>
+                    <select class="filter-input">
+                        <option value="">All Types</option>
+                        <option value="diagnosis">Diagnosis</option>
+                        <option value="prescription">Prescription</option>
+                        <option value="lab-report">Lab Report</option>
+                        <option value="imaging">Imaging</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medical Records -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">All Medical Records</h2>
+                <a href="#" class="section-action">Add New Record</a>
+            </div>
+            
+            <div class="record-card">
+                <div class="record-header">
+                    <div class="record-patient">
+                        <div class="record-patient-name">Amit Kumar</div>
+                        <div class="record-patient-id">ID: P1001</div>
+                    </div>
+                    <div class="record-date">
+                        <div>June 15, 2023</div>
+                        <div>09:30 AM</div>
+                    </div>
+                </div>
+                
+                <div class="record-details">
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Age/Gender:</div>
+                        <div class="record-detail-value">32 years, Male</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Contact:</div>
+                        <div class="record-detail-value">+91 98765 43210</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Location:</div>
+                        <div class="record-detail-value">Jaipur, Rajasthan</div>
+                    </div>
+                </div>
+                
+                <div class="record-diagnosis">
+                    <div class="record-diagnosis-title">
+                        <i class="fas fa-stethoscope"></i> Diagnosis
+                    </div>
+                    <div class="record-diagnosis-content">
+                        Patient presents with symptoms of upper respiratory tract infection including sore throat, cough, and mild fever. Throat examination shows erythema and tonsillar enlargement. No cervical lymphadenopathy noted. Chest is clear to auscultation bilaterally.
+                    </div>
+                </div>
+                
+                <div class="record-treatment">
+                    <div class="record-treatment-title">
+                        <i class="fas fa-prescription-bottle-alt"></i> Treatment
+                    </div>
+                    <div class="record-treatment-content">
+                        Prescribed paracetamol 500mg for fever and pain, 3 times a day for 5 days. Recommended warm salt water gargles for sore throat. Advised rest and increased fluid intake. Follow-up in 3 days if symptoms persist.
+                    </div>
+                </div>
+                
+                <div class="record-actions">
+                    <button class="record-action-btn primary">View Full Report</button>
+                    <button class="record-action-btn secondary">Download</button>
+                    <button class="record-action-btn tertiary">Share</button>
+                </div>
+            </div>
+            
+            <div class="record-card">
+                <div class="record-header">
+                    <div class="record-patient">
+                        <div class="record-patient-name">Priya Singh</div>
+                        <div class="record-patient-id">ID: P1002</div>
+                    </div>
+                    <div class="record-date">
+                        <div>June 14, 2023</div>
+                        <div>10:45 AM</div>
+                    </div>
+                </div>
+                
+                <div class="record-details">
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Age/Gender:</div>
+                        <div class="record-detail-value">28 years, Female</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Contact:</div>
+                        <div class="record-detail-value">+91 98765 43211</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Location:</div>
+                        <div class="record-detail-value">Delhi, Delhi</div>
+                    </div>
+                </div>
+                
+                <div class="record-diagnosis">
+                    <div class="record-diagnosis-title">
+                        <i class="fas fa-stethoscope"></i> Diagnosis
+                    </div>
+                    <div class="record-diagnosis-content">
+                        Patient with history of type 2 diabetes presenting for follow-up. Blood glucose levels show fasting glucose of 142 mg/dL and postprandial of 186 mg/dL. HbA1c is 7.2%. Patient reports good compliance with medication regimen but occasional dietary indiscretions.
+                    </div>
+                </div>
+                
+                <div class="record-treatment">
+                    <div class="record-treatment-title">
+                        <i class="fas fa-prescription-bottle-alt"></i> Treatment
+                    </div>
+                    <div class="record-treatment-content">
+                        Continued on metformin 500mg twice daily. Added glimepiride 1mg once daily before breakfast. Emphasized importance of strict dietary control and regular exercise. Advised daily blood glucose monitoring. Follow-up in 1 month.
+                    </div>
+                </div>
+                
+                <div class="record-actions">
+                    <button class="record-action-btn primary">View Full Report</button>
+                    <button class="record-action-btn secondary">Download</button>
+                    <button class="record-action-btn tertiary">Share</button>
+                </div>
+            </div>
+            
+            <div class="record-card">
+                <div class="record-header">
+                    <div class="record-patient">
+                        <div class="record-patient-name">Rahul Verma</div>
+                        <div class="record-patient-id">ID: P1003</div>
+                    </div>
+                    <div class="record-date">
+                        <div>June 13, 2023</div>
+                        <div>02:15 PM</div>
+                    </div>
+                </div>
+                
+                <div class="record-details">
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Age/Gender:</div>
+                        <div class="record-detail-value">45 years, Male</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Contact:</div>
+                        <div class="record-detail-value">+91 98765 43212</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Location:</div>
+                        <div class="record-detail-value">Mumbai, Maharashtra</div>
+                    </div>
+                </div>
+                
+                <div class="record-diagnosis">
+                    <div class="record-diagnosis-title">
+                        <i class="fas fa-stethoscope"></i> Diagnosis
+                    </div>
+                    <div class="record-diagnosis-content">
+                        Patient presents with acute abdominal pain localized to right upper quadrant. Pain is associated with nausea and vomiting. On examination, tenderness in right hypochondrium with positive Murphy's sign. Ultrasound shows gallstones with gallbladder wall thickening.
+                    </div>
+                </div>
+                
+                <div class="record-treatment">
+                    <div class="record-treatment-title">
+                        <i class="fas fa-prescription-bottle-alt"></i> Treatment
+                    </div>
+                    <div class="record-treatment-content">
+                        Prescribed analgesics for pain relief. Advised low-fat diet and increased fluid intake. Referred for surgical consultation for cholecystectomy. Patient educated about symptoms requiring immediate medical attention.
+                    </div>
+                </div>
+                
+                <div class="record-actions">
+                    <button class="record-action-btn primary">View Full Report</button>
+                    <button class="record-action-btn secondary">Download</button>
+                    <button class="record-action-btn tertiary">Share</button>
+                </div>
+            </div>
+            
+            <div class="record-card">
+                <div class="record-header">
+                    <div class="record-patient">
+                        <div class="record-patient-name">Sunita Devi</div>
+                        <div class="record-patient-id">ID: P1004</div>
+                    </div>
+                    <div class="record-date">
+                        <div>June 12, 2023</div>
+                        <div>11:30 AM</div>
+                    </div>
+                </div>
+                
+                <div class="record-details">
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Age/Gender:</div>
+                        <div class="record-detail-value">60 years, Female</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Contact:</div>
+                        <div class="record-detail-value">+91 98765 43213</div>
+                    </div>
+                    <div class="record-detail-row">
+                        <div class="record-detail-label">Location:</div>
+                        <div class="record-detail-value">Bangalore, Karnataka</div>
+                    </div>
+                </div>
+                
+                <div class="record-diagnosis">
+                    <div class="record-diagnosis-title">
+                        <i class="fas fa-stethoscope"></i> Diagnosis
+                    </div>
+                    <div class="record-diagnosis-content">
+                        Patient with history of hypertension and osteoarthritis presenting for routine follow-up. Blood pressure is 140/90 mmHg. Joint pain in knees rated 6/10 on visual analog scale. Recent blood tests show normal renal function and electrolyte levels.
+                    </div>
+                </div>
+                
+                <div class="record-treatment">
+                    <div class="record-treatment-title">
+                        <i class="fas fa-prescription-bottle-alt"></i> Treatment
+                    </div>
+                    <div class="record-treatment-content">
+                        Adjusted antihypertensive medication to include amlodipine 5mg in addition to existing telmisartan. Prescribed acetaminophen for joint pain. Recommended physical therapy exercises for knee strengthening. Advised low-impact aerobic exercises.
+                    </div>
+                </div>
+                
+                <div class="record-actions">
+                    <button class="record-action-btn primary">View Full Report</button>
+                    <button class="record-action-btn secondary">Download</button>
+                    <button class="record-action-btn tertiary">Share</button>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="#" class="page-link">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active">
+                        <a href="#" class="page-link">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Add click event to record action buttons
+        document.querySelectorAll('.record-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                const patientName = this.closest('.record-card').querySelector('.record-patient-name').textContent;
+                
+                if (action === 'View Full Report') {
+                    alert(`Viewing full medical report for ${patientName}. In a real application, this would open the complete medical record.`);
+                } else if (action === 'Download') {
+                    alert(`Downloading medical report for ${patientName}. In a real application, this would download the medical record as a PDF.`);
+                } else if (action === 'Share') {
+                    alert(`Sharing medical report for ${patientName}. In a real application, this would open sharing options.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

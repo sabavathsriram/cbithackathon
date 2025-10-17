@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu - Availability</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            /* Professional Medical Color Theme */
+            --primary-color: #2E86AB; /* Professional Blue */
+            --secondary-color: #A23B72; /* Medical Purple */
+            --accent-color: #F18F01; /* Warm Orange */
+            --success-color: #06FFA5; /* Medical Green */
+            --light-color: #F8F9FA; /* Light Gray */
+            --dark-color: #2D3436; /* Dark Gray */
+            --text-color: #333;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: var(--card-shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .sidebar-logo i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-item:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-menu-item.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .topbar {
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .section-action {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .section-action:hover {
+            text-decoration: underline;
+        }
+        
+        .week-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .calendar-day {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calendar-day:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .calendar-day.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .calendar-day-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .calendar-day-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-day.active .calendar-day-date {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .calendar-day-slots {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .calendar-day.active .calendar-day-slots {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .calendar-day-action {
+            margin-top: 15px;
+        }
+        
+        .calendar-day-action-btn {
+            padding: 6px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-day-action-btn:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .calendar-day.active .calendar-day-action-btn {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .calendar-day.active .calendar-day-action-btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        .time-slots-container {
+            margin-bottom: 30px;
+        }
+        
+        .time-slots-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .time-slots-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .time-slots-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .time-slots-action-btn {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slots-action-btn:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .time-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .time-slot-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .time-slot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .time-slot-time {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .time-slot-status {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .time-slot-status.available {
+            color: var(--success-color);
+        }
+        
+        .time-slot-status.booked {
+            color: var(--accent-color);
+        }
+        
+        .time-slot-status.unavailable {
+            color: #999;
+        }
+        
+        .time-slot-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .time-slot-action-btn {
+            flex: 1;
+            padding: 6px 10px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slot-action-btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        .time-slot-action-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .time-slot-action-btn.primary:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .time-slot-action-btn.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .time-slot-action-btn.danger:hover {
+            background-color: #f5c6cb;
+        }
+        
+        .break-slots-container {
+            margin-bottom: 30px;
+        }
+        
+        .break-slots-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .break-slots-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .break-slots-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .break-slots-action-btn {
+            padding: 8px 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .break-slots-action-btn:hover {
+            background-color: #8A2E5F;
+        }
+        
+        .break-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .break-slot-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .break-slot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .break-slot-time {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .break-slot-duration {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .break-slot-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .week-calendar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .time-slots-grid,
+            .break-slots-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fas fa-heartbeat"></i> SwasthyaSetu
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <a href="index.html" class="sidebar-menu-item">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="appointments.html" class="sidebar-menu-item">
+                <i class="fas fa-calendar-alt"></i> Appointments
+            </a>
+            <a href="patients.html" class="sidebar-menu-item">
+                <i class="fas fa-users"></i> Patients
+            </a>
+            <a href="medical-records.html" class="sidebar-menu-item">
+                <i class="fas fa-file-medical"></i> Medical Records
+            </a>
+            <a href="consultations.html" class="sidebar-menu-item">
+                <i class="fas fa-comments"></i> Consultations
+            </a>
+            <a href="earnings.html" class="sidebar-menu-item">
+                <i class="fas fa-chart-line"></i> Earnings
+            </a>
+            <a href="availability.html" class="sidebar-menu-item active">
+                <i class="fas fa-clock"></i> Availability
+            </a>
+            <a href="settings.html" class="sidebar-menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <h1 class="topbar-title">Availability</h1>
+            <div class="topbar-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="profile-dropdown">
+                    <img src="https://i.imgur.com/1ZqZcFj.jpg" alt="Dr. Rajesh Sharma" class="profile-image">
+                    <div>
+                        <div class="fw-bold">Dr. Rajesh Sharma</div>
+                        <div class="small text-muted">General Medicine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week Calendar -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Weekly Availability</h2>
+                <a href="#" class="section-action">Set Default Schedule</a>
+            </div>
+            
+            <div class="week-calendar">
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Monday</div>
+                    <div class="calendar-day-date">June 12</div>
+                    <div class="calendar-day-slots">8 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day active">
+                    <div class="calendar-day-name">Tuesday</div>
+                    <div class="calendar-day-date">June 13</div>
+                    <div class="calendar-day-slots">10 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Wednesday</div>
+                    <div class="calendar-day-date">June 14</div>
+                    <div class="calendar-day-slots">6 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Thursday</div>
+                    <div class="calendar-day-date">June 15</div>
+                    <div class="calendar-day-slots">8 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Friday</div>
+                    <div class="calendar-day-date">June 16</div>
+                    <div class="calendar-day-slots">7 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Saturday</div>
+                    <div class="calendar-day-date">June 17</div>
+                    <div class="calendar-day-slots">4 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-day">
+                    <div class="calendar-day-name">Sunday</div>
+                    <div class="calendar-day-date">June 18</div>
+                    <div class="calendar-day-slots">0 slots</div>
+                    <div class="calendar-day-action">
+                        <button class="calendar-day-action-btn">Manage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Time Slots -->
+        <div class="content-section">
+            <div class="time-slots-header">
+                <h2 class="time-slots-title">Today's Time Slots</h2>
+                <div class="time-slots-actions">
+                    <button class="time-slots-action-btn">Add New Slot</button>
+                    <button class="time-slots-action-btn">Bulk Edit</button>
+                </div>
+            </div>
+            
+            <div class="time-slots-grid">
+                <div class="time-slot-card">
+                    <div class="time-slot-time">09:00 AM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">10:30 AM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">11:45 AM</div>
+                    <div class="time-slot-status booked">Booked</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">View</button>
+                        <button class="time-slot-action-btn">Edit</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">02:00 PM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">03:30 PM</div>
+                    <div class="time-slot-status booked">Booked</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">View</button>
+                        <button class="time-slot-action-btn">Edit</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">04:45 PM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">06:00 PM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="time-slot-card">
+                    <div class="time-slot-time">07:30 PM</div>
+                    <div class="time-slot-status available">Available</div>
+                    <div class="time-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Break Slots -->
+        <div class="content-section">
+            <div class="break-slots-header">
+                <h2 class="break-slots-title">Break Times</h2>
+                <div class="break-slots-actions">
+                    <button class="break-slots-action-btn">Add Break</button>
+                    <button class="break-slots-action-btn">Bulk Edit</button>
+                </div>
+            </div>
+            
+            <div class="break-slots-grid">
+                <div class="break-slot-card">
+                    <div class="break-slot-time">10:00 AM - 10:30 AM</div>
+                    <div class="break-slot-duration">30 minutes</div>
+                    <div class="break-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="break-slot-card">
+                    <div class="break-slot-time">12:00 PM - 01:00 PM</div>
+                    <div class="break-slot-duration">1 hour</div>
+                    <div class="break-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="break-slot-card">
+                    <div class="break-slot-time">03:00 PM - 03:30 PM</div>
+                    <div class="break-slot-duration">30 minutes</div>
+                    <div class="break-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="break-slot-card">
+                    <div class="break-slot-time">05:00 PM - 05:30 PM</div>
+                    <div class="break-slot-duration">30 minutes</div>
+                    <div class="break-slot-actions">
+                        <button class="time-slot-action-btn">Edit</button>
+                        <button class="time-slot-action-btn danger">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Add click event to calendar day buttons
+        document.querySelectorAll('.calendar-day-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const dayName = this.closest('.calendar-day').querySelector('.calendar-day-name').textContent;
+                alert(`Managing availability for ${dayName}. In a real application, this would open a detailed availability management interface.`);
+            });
+        });
+        
+        // Add click event to time slot action buttons
+        document.querySelectorAll('.time-slot-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                const timeSlot = this.closest('.time-slot-card').querySelector('.time-slot-time').textContent;
+                
+                if (action === 'Edit') {
+                    alert(`Editing time slot at ${timeSlot}. In a real application, this would open a time slot editing form.`);
+                } else if (action === 'Remove') {
+                    if (confirm(`Are you sure you want to remove the time slot at ${timeSlot}?`)) {
+                        alert(`Time slot at ${timeSlot} has been removed.`);
+                    }
+                } else if (action === 'View') {
+                    alert(`Viewing details for booked time slot at ${timeSlot}. In a real application, this would show the appointment details.`);
+                }
+            });
+        });
+        
+        // Add click event to break slot action buttons
+        document.querySelectorAll('.break-slot-card .time-slot-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                const breakTime = this.closest('.break-slot-card').querySelector('.break-slot-time').textContent;
+                
+                if (action === 'Edit') {
+                    alert(`Editing break time at ${breakTime}. In a real application, this would open a break time editing form.`);
+                } else if (action === 'Remove') {
+                    if (confirm(`Are you sure you want to remove the break time at ${breakTime}?`)) {
+                        alert(`Break time at ${breakTime} has been removed.`);
+                    }
+                }
+            });
+        });
+        
+        // Add click event to header action buttons
+        document.querySelectorAll('.time-slots-action-btn, .break-slots-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                
+                if (action === 'Add New Slot') {
+                    alert('Adding new time slot. In a real application, this would open a form to add a new time slot.');
+                } else if (action === 'Bulk Edit') {
+                    alert('Bulk editing time slots. In a real application, this would open a bulk editing interface.');
+                } else if (action === 'Add Break') {
+                    alert('Adding new break time. In a real application, this would open a form to add a new break time.');
+                } else if (action === 'Bulk Edit') {
+                    alert('Bulk editing break times. In a real application, this would open a bulk editing interface.');
+                } else if (action === 'Set Default Schedule') {
+                    alert('Setting default schedule. In a real application, this would open a default schedule management interface.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

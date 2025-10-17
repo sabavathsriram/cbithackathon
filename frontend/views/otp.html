@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code - Swasthyasetu</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <style>
+        :root {
+            --primary-teal: #00BCD4;
+            --primary-purple: #7B1FA2;
+            --accent-coral: #FF5252;
+            --accent-gold: #FFC107;
+            --neutral-light: #f5f7fa;
+            --neutral-dark: #263238;
+            --text-primary: #263238;
+            --text-secondary: #546E7A;
+            --gradient-1: linear-gradient(135deg, #00BCD4 0%, #7B1FA2 100%);
+            --gradient-2: linear-gradient(135deg, #FF5252 0%, #FFC107 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--neutral-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Auth Section */
+        .auth-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: linear-gradient(135deg, rgba(0, 188, 212, 0.08) 0%, rgba(123, 31, 162, 0.08) 100%);
+            position: relative;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .auth-section::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 188, 212, 0.15) 0%, rgba(123, 31, 162, 0.08) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .auth-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 82, 82, 0.15) 0%, rgba(255, 193, 7, 0.08) 70%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 500px;
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            transform: translateZ(0);
+        }
+        
+        .auth-form-container {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            order: 1;
+        }
+        
+        .auth-animation {
+            flex: 1;
+            background: var(--gradient-1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            order: 2;
+        }
+        
+        .auth-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .auth-animation-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .auth-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .verification-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .verification-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .verification-input:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2);
+            outline: none;
+        }
+        
+        .form-control {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2);
+            outline: none;
+        }
+        
+        .btn-auth {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+        
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-auth:hover::before {
+            width: 100%;
+        }
+        
+        .btn-auth:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-teal);
+            border: 2px solid var(--primary-teal);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-teal);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .timer {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .timer.warning {
+            color: var(--accent-coral);
+            font-weight: 500;
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .auth-links a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-links a:hover {
+            color: var(--primary-purple);
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+        
+        /* Lottie Animation Container */
+        .lottie-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lottie-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .animation-fallback {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            display: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+            
+            .auth-form-container {
+                order: 1;
+                padding: 30px 25px;
+            }
+            
+            .auth-animation {
+                order: 2;
+                padding: 30px;
+                min-height: 300px;
+            }
+            
+            .lottie-title {
+                font-size: 1.2rem;
+            }
+            
+            .verification-input {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container animate__animated animate__fadeIn">
+                <div class="auth-form-container">
+                    <h2 class="auth-title">Enter Verification Code</h2>
+                    <p class="auth-description">We've sent a 6-digit verification code to your email. Please enter it below.</p>
+                    
+                    <div class="success-message" id="success-message">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Verification successful! Redirecting to your account...
+                    </div>
+                    
+                    <div class="error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span id="error-text">Invalid verification code. Please try again.</span>
+                    </div>
+                    
+                    <!-- Verification Form -->
+                    <form id="verification-form">
+                        <div class="verification-inputs">
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code1" required>
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code2" required>
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code3" required>
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code4" required>
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code5" required>
+                            <input type="text" class="form-control verification-input" maxlength="1" id="code6" required>
+                        </div>
+                        
+                        <div class="timer" id="timer">
+                            Code expires in: <span id="countdown">05:00</span>
+                        </div>
+                        
+                        <button type="submit" class="btn-auth">Verify Code</button>
+                    </form>
+                    
+                    <a href="#" class="btn-secondary" id="resend-code">
+                        <i class="fas fa-redo me-2"></i>Resend Code
+                    </a>
+                    
+                    <div class="auth-links">
+                        <a href="signin.html">Back to Sign In</a>
+                    </div>
+                </div>
+                
+                <div class="auth-animation">
+                    <div class="auth-animation-content">
+                        <div class="lottie-container">
+                            <h3 class="lottie-title">Account Verification</h3>
+                            <!-- Verification code animation -->
+                            <lottie-player 
+                                src="https://assets5.lottiefiles.com/packages/lf20_2nqyklwc.json" 
+                                background="transparent" 
+                                speed="1" 
+                                style="width: 320px; height: 320px;" 
+                                loop 
+                                autoplay>
+                            </lottie-player>
+                            <div class="animation-fallback" id="animation-fallback">
+                                <i class="fas fa-mobile-alt fa-3x mb-3"></i>
+                                <p>Enter the code sent to your device</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Lottie animation loaded and show fallback if not
+            setTimeout(() => {
+                const lottiePlayer = document.querySelector('lottie-player');
+                const fallback = document.getElementById('animation-fallback');
+                
+                if (lottiePlayer && lottiePlayer.shadowRoot && lottiePlayer.shadowRoot.querySelector('svg')) {
+                    // Animation loaded successfully
+                    console.log('Lottie animation loaded successfully');
+                } else {
+                    // Show fallback
+                    if (fallback) {
+                        fallback.style.display = 'block';
+                    }
+                    if (lottiePlayer) {
+                        lottiePlayer.style.display = 'none';
+                    }
+                }
+            }, 3000);
+            
+            // Timer functionality
+            let timeLeft = 300; // 5 minutes in seconds
+            const countdownElement = document.getElementById('countdown');
+            const timerElement = document.getElementById('timer');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerElement.innerHTML = 'Code expired. <a href="#" id="resend-code-here">Request a new code</a>';
+                    timerElement.classList.add('warning');
+                    document.getElementById('resend-code-here').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        resendCode();
+                    });
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Add warning class when less than 1 minute remains
+                if (timeLeft < 60) {
+                    timerElement.classList.add('warning');
+                }
+            }, 1000);
+            
+            // Auto-focus to first input
+            document.getElementById('code1').focus();
+            
+            // Handle input navigation
+            const inputs = document.querySelectorAll('.verification-input');
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    
+                    // Only allow numbers
+                    if (!/^\d$/.test(value)) {
+                        e.target.value = '';
+                        return;
+                    }
+                    
+                    // Move to next input
+                    if (value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    // Handle backspace
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                    
+                    // Handle paste
+                    if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
+                        navigator.clipboard.readText().then(text => {
+                            const digits = text.replace(/\D/g, '').slice(0, 6);
+                            digits.split('').forEach((digit, i) => {
+                                if (inputs[i]) inputs[i].value = digit;
+                            });
+                        });
+                    }
+                });
+            });
+            
+            // Form validation
+            document.getElementById('verification-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const successMessage = document.getElementById('success-message');
+                const errorMessage = document.getElementById('error-message');
+                const errorText = document.getElementById('error-text');
+                
+                // Hide any previous messages
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                // Get verification code
+                const code = Array.from(inputs).map(input => input.value).join('');
+                
+                if (code.length !== 6) {
+                    errorText.textContent = 'Please enter the complete 6-digit code.';
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+                
+                // Simulate API call
+                // In a real app, this would be an actual API request
+                setTimeout(() => {
+                    // Simulate success (correct code is "123456")
+                    if (code === '123456') {
+                        successMessage.style.display = 'block';
+                        // Disable form after successful submission
+                        inputs.forEach(input => input.disabled = true);
+                        document.querySelector('.btn-auth').disabled = true;
+                        
+                        // Redirect to dashboard after 2 seconds
+                        setTimeout(() => {
+                            alert('Redirecting to dashboard...');
+                            // In a real app: window.location.href = 'dashboard.html';
+                        }, 2000);
+                    } else {
+                        errorText.textContent = 'Invalid verification code. Please check and try again.';
+                        errorMessage.style.display = 'block';
+                    }
+                }, 1500);
+            });
+            
+            // Resend code functionality
+            function resendCode() {
+                const successMessage = document.getElementById('success-message');
+                const errorMessage = document.getElementById('error-message');
+                
+                // Hide any previous messages
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                // Reset timer
+                clearInterval(timer);
+                timeLeft = 300;
+                timerElement.classList.remove('warning');
+                timerElement.innerHTML = 'Code expires in: <span id="countdown">05:00</span>';
+                
+                // Clear inputs
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.disabled = false;
+                });
+                
+                // Focus first input
+                document.getElementById('code1').focus();
+                
+                // Enable submit button
+                document.querySelector('.btn-auth').disabled = false;
+                
+                // Show success message
+                const resendMessage = document.createElement('div');
+                resendMessage.className = 'alert alert-info';
+                resendMessage.innerHTML = '<i class="fas fa-info-circle me-2"></i>A new verification code has been sent to your email.';
+                
+                const form = document.getElementById('verification-form');
+                form.parentNode.insertBefore(resendMessage, form);
+                
+                // Remove message after 5 seconds
+                setTimeout(() => {
+                    resendMessage.remove();
+                }, 5000);
+                
+                // Restart timer
+                const newTimer = setInterval(() => {
+                    timeLeft--;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(newTimer);
+                        timerElement.innerHTML = 'Code expired. <a href="#" id="resend-code-here">Request a new code</a>';
+                        timerElement.classList.add('warning');
+                        document.getElementById('resend-code-here').addEventListener('click', (e) => {
+                            e.preventDefault();
+                            resendCode();
+                        });
+                        return;
+                    }
+                    
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    // Add warning class when less than 1 minute remains
+                    if (timeLeft < 60) {
+                        timerElement.classList.add('warning');
+                    }
+                }, 1000);
+            }
+            
+            // Add event listener to resend code button
+            document.getElementById('resend-code').addEventListener('click', (e) => {
+                e.preventDefault();
+                resendCode();
+            });
+            
+            // GSAP Animations
+            gsap.from(".auth-container", {
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                delay: 0.2,
+                ease: "power3.out"
+            });
+        });
+    </script>
+</body>
+</html>

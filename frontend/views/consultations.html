@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu - Consultations</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            /* Professional Medical Color Theme */
+            --primary-color: #2E86AB; /* Professional Blue */
+            --secondary-color: #A23B72; /* Medical Purple */
+            --accent-color: #F18F01; /* Warm Orange */
+            --success-color: #06FFA5; /* Medical Green */
+            --light-color: #F8F9FA; /* Light Gray */
+            --dark-color: #2D3436; /* Dark Gray */
+            --text-color: #333;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: var(--card-shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .sidebar-logo i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-item:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-menu-item.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .topbar {
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topbar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .section-action {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .section-action:hover {
+            text-decoration: underline;
+        }
+        
+        .filter-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .filter-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .consultation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .consultation-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--secondary-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .consultation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .consultation-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .consultation-patient-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .consultation-patient-info {
+            flex: 1;
+        }
+        
+        .consultation-patient-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 3px;
+        }
+        
+        .consultation-patient-id {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .consultation-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .consultation-status.completed {
+            background-color: #E3F2FD;
+            color: #1565C0;
+        }
+        
+        .consultation-status.scheduled {
+            background-color: #FFF3E0;
+            color: #E65100;
+        }
+        
+        .consultation-status.cancelled {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .consultation-details {
+            margin-bottom: 15px;
+            flex: 1;
+        }
+        
+        .consultation-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .consultation-detail i {
+            margin-right: 8px;
+            color: var(--primary-color);
+            width: 20px;
+        }
+        
+        .consultation-summary {
+            background-color: var(--light-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .consultation-summary-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .consultation-summary-title i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+        }
+        
+        .consultation-summary-content {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .consultation-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+        
+        .consultation-action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .consultation-action-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .consultation-action-btn.primary:hover {
+            background-color: #1C5F8A;
+        }
+        
+        .consultation-action-btn.secondary {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .consultation-action-btn.secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .consultation-action-btn.tertiary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .consultation-action-btn.tertiary:hover {
+            background-color: #8A2E5F;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination {
+            display: flex;
+            list-style: none;
+        }
+        
+        .page-item {
+            margin: 0 5px;
+        }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-link:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .consultation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .consultation-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fas fa-heartbeat"></i> SwasthyaSetu
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <a href="index.html" class="sidebar-menu-item">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="appointments.html" class="sidebar-menu-item">
+                <i class="fas fa-calendar-alt"></i> Appointments
+            </a>
+            <a href="patients.html" class="sidebar-menu-item">
+                <i class="fas fa-users"></i> Patients
+            </a>
+            <a href="medical-records.html" class="sidebar-menu-item">
+                <i class="fas fa-file-medical"></i> Medical Records
+            </a>
+            <a href="consultations.html" class="sidebar-menu-item active">
+                <i class="fas fa-comments"></i> Consultations
+            </a>
+            <a href="earnings.html" class="sidebar-menu-item">
+                <i class="fas fa-chart-line"></i> Earnings
+            </a>
+            <a href="availability.html" class="sidebar-menu-item">
+                <i class="fas fa-clock"></i> Availability
+            </a>
+            <a href="settings.html" class="sidebar-menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <h1 class="topbar-title">Consultations</h1>
+            <div class="topbar-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="profile-dropdown">
+                    <img src="https://i.imgur.com/1ZqZcFj.jpg" alt="Dr. Rajesh Sharma" class="profile-image">
+                    <div>
+                        <div class="fw-bold">Dr. Rajesh Sharma</div>
+                        <div class="small text-muted">General Medicine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" placeholder="Search by patient name...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date</label>
+                    <input type="date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-input">
+                        <option value="">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="scheduled">Scheduled</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Consultations Grid -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">All Consultations</h2>
+                <a href="#" class="section-action">Schedule New Consultation</a>
+            </div>
+            
+            <div class="consultation-grid">
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/7WZtOZ5.jpg" alt="Amit Kumar" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Amit Kumar</div>
+                            <div class="consultation-patient-id">ID: P1001</div>
+                        </div>
+                        <div class="consultation-status completed">Completed</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 15, 2023 • 09:30 AM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 15 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-file-medical"></i> Summary
+                        </div>
+                        <div class="consultation-summary-content">
+                            Patient presented with symptoms of upper respiratory tract infection. Diagnosed with mild viral pharyngitis. Prescribed symptomatic treatment and advised rest.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Recording</button>
+                        <button class="consultation-action-btn tertiary">Prescription</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/8WZtOZ6.jpg" alt="Priya Singh" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Priya Singh</div>
+                            <div class="consultation-patient-id">ID: P1002</div>
+                        </div>
+                        <div class="consultation-status completed">Completed</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 14, 2023 • 10:45 AM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 20 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-file-medical"></i> Summary
+                        </div>
+                        <div class="consultation-summary-content">
+                            Patient with type 2 diabetes for follow-up. Blood glucose levels elevated. Adjusted medication regimen and emphasized importance of dietary control.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Recording</button>
+                        <button class="consultation-action-btn tertiary">Prescription</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/9WZtOZ7.jpg" alt="Rahul Verma" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Rahul Verma</div>
+                            <div class="consultation-patient-id">ID: P1003</div>
+                        </div>
+                        <div class="consultation-status scheduled">Scheduled</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 16, 2023 • 11:00 AM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 30 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-info-circle"></i> Notes
+                        </div>
+                        <div class="consultation-summary-content">
+                            Follow-up consultation for abdominal pain. Patient to discuss recent ultrasound results and treatment options for gallstones.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Reschedule</button>
+                        <button class="consultation-action-btn tertiary">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/10WZtOZ8.jpg" alt="Sunita Devi" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Sunita Devi</div>
+                            <div class="consultation-patient-id">ID: P1004</div>
+                        </div>
+                        <div class="consultation-status completed">Completed</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 12, 2023 • 02:30 PM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 25 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-file-medical"></i> Summary
+                        </div>
+                        <div class="consultation-summary-content">
+                            Patient with hypertension and osteoarthritis. Adjusted medication and recommended physical therapy. Discussed importance of regular exercise and diet.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Recording</button>
+                        <button class="consultation-action-btn tertiary">Prescription</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/11WZtOZ9.jpg" alt="Vikram Singh" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Vikram Singh</div>
+                            <div class="consultation-patient-id">ID: P1005</div>
+                        </div>
+                        <div class="consultation-status scheduled">Scheduled</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 17, 2023 • 03:00 PM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 20 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-info-circle"></i> Notes
+                        </div>
+                        <div class="consultation-summary-content">
+                            Initial consultation for skin allergy. Patient to discuss recent skin test results and treatment options for allergic dermatitis.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Reschedule</button>
+                        <button class="consultation-action-btn tertiary">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/12WZtOZ0.jpg" alt="Anita Patel" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Anita Patel</div>
+                            <div class="consultation-patient-id">ID: P1006</div>
+                        </div>
+                        <div class="consultation-status cancelled">Cancelled</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 10, 2023 • 04:00 PM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 30 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-info-circle"></i> Notes
+                        </div>
+                        <div class="consultation-summary-content">
+                            Consultation cancelled by patient due to personal emergency. Rescheduled for June 20, 2023.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Reschedule</button>
+                        <button class="consultation-action-btn tertiary">Refund</button>
+                    </div>
+                </div>
+                
+                <div class="consultation-card">
+                    <div class="consultation-header">
+                        <img src="https://i.imgur.com/13WZtOZ1.jpg" alt="Rajesh Kumar" class="consultation-patient-image">
+                        <div class="consultation-patient-info">
+                            <div class="consultation-patient-name">Rajesh Kumar</div>
+                            <div class="consultation-patient-id">ID: P1007</div>
+                        </div>
+                        <div class="consultation-status completed">Completed</div>
+                    </div>
+                    
+                    <div class="consultation-details">
+                        <div class="consultation-detail">
+                            <i class="fas fa-calendar-alt"></i> June 9, 2023 • 11:00 AM
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-video"></i> Video Consultation
+                        </div>
+                        <div class="consultation-detail">
+                            <i class="fas fa-clock"></i> Duration: 15 minutes
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-summary">
+                        <div class="consultation-summary-title">
+                            <i class="fas fa-file-medical"></i> Summary
+                        </div>
+                        <div class="consultation-summary-content">
+                            Patient with persistent headache. Symptoms consistent with tension headache. Advised lifestyle modifications and prescribed analgesics for pain relief.
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-actions">
+                        <button class="consultation-action-btn primary">View Details</button>
+                        <button class="consultation-action-btn secondary">Recording</button>
+                        <button class="consultation-action-btn tertiary">Prescription</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="#" class="page-link">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active">
+                        <a href="#" class="page-link">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Add click event to consultation action buttons
+        document.querySelectorAll('.consultation-action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                const patientName = this.closest('.consultation-card').querySelector('.consultation-patient-name').textContent;
+                
+                if (action === 'View Details') {
+                    alert(`Viewing details for consultation with ${patientName}. In a real application, this would open the complete consultation details.`);
+                } else if (action === 'Recording') {
+                    alert(`Playing recording of consultation with ${patientName}. In a real application, this would play the video recording of the consultation.`);
+                } else if (action === 'Prescription') {
+                    alert(`Viewing prescription for ${patientName}. In a real application, this would open the prescription details.`);
+                } else if (action === 'Reschedule') {
+                    alert(`Rescheduling consultation with ${patientName}. In a real application, this would open a rescheduling form.`);
+                } else if (action === 'Cancel') {
+                    if (confirm(`Are you sure you want to cancel the consultation with ${patientName}?`)) {
+                        alert(`Consultation with ${patientName} has been cancelled.`);
+                    }
+                } else if (action === 'Refund') {
+                    alert(`Processing refund for cancelled consultation with ${patientName}. In a real application, this would process the refund.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
