@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu Chatbot - Your Health Assistant</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            /* Energetic Color Theme */
+            --primary-color: #E53935; /* Vibrant Red */
+            --secondary-color: #43A047; /* Energetic Green */
+            --accent-color: #FDD835; /* Bright Yellow */
+            --dark-color: #1A237E; /* Deep Blue */
+            --light-color: #E8F5E9; /* Light Green */
+            --text-color: #333;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Chat Header */
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header h2 i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .chat-header .status {
+            margin-left: 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+            display: inline-block;
+        }
+        
+        .chat-header .language-selector {
+            margin-left: auto;
+            border-radius: 20px;
+            border: 2px solid white;
+            background-color: transparent;
+            color: white;
+            font-weight: 500;
+            padding: 5px 15px;
+        }
+        
+        .chat-header .language-selector:focus {
+            box-shadow: none;
+        }
+        
+        .chat-header .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-header .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: white;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CiAgPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSJyZ2JhKDIyOSwgNTcsIDUzLCAwLjA1KSIgLz4KPC9zdmc+');
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message.bot {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .message.user .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.bot .message-content {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message-text {
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .message.bot .message-time {
+            text-align: left;
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            background-color: #f1f1f1;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            max-width: 70%;
+            margin-bottom: 20px;
+        }
+        
+        .typing-indicator span {
+            height: 10px;
+            width: 10px;
+            background-color: #999;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Chat Input */
+        .chat-input-container {
+            background-color: white;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .chat-input {
+            border: 2px solid #eee;
+            border-radius: 25px;
+            padding: 12px 50px 12px 20px;
+            font-size: 1rem;
+            width: 100%;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .mic-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mic-button:hover {
+            color: var(--dark-color);
+        }
+        
+        .mic-button.recording {
+            color: var(--accent-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(253, 216, 53, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(253, 216, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(253, 216, 53, 0);
+            }
+        }
+        
+        .send-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-weight: 500;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            background-color: #D32F2F;
+        }
+        
+        .send-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Quick Replies */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .quick-reply {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-reply:hover {
+            background-color: var(--light-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        /* Chat Options */
+        .chat-options {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--hover-shadow);
+            padding: 15px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .chat-options.show {
+            display: block;
+        }
+        
+        .chat-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-option:hover {
+            background-color: var(--light-color);
+        }
+        
+        .chat-option i {
+            font-size: 1.2rem;
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .chat-option-text {
+            font-weight: 500;
+        }
+        
+        /* Doctor Card */
+        .doctor-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+        }
+        
+        .doctor-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .doctor-info {
+            flex: 1;
+        }
+        
+        .doctor-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .doctor-specialty {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .doctor-rating {
+            color: #f39c12;
+            font-size: 0.9rem;
+        }
+        
+        .connect-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .connect-button:hover {
+            background-color: #388E3C;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .chat-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .chat-header .status {
+                display: none;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .quick-replies {
+                justify-content: center;
+            }
+            
+            .chat-options {
+                right: 10px;
+                bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <h2><i class="fas fa-robot"></i> SwasthyaSetu Assistant</h2>
+        <div class="status">
+            <span class="status-dot"></span> Online
+        </div>
+        <select class="language-selector" id="languageSelector">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="bn">বাংলা</option>
+            <option value="mr">मराठी</option>
+        </select>
+        <button class="close-btn" id="closeChat">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Bot Welcome Message -->
+            <div class="message bot">
+                <div class="message-content">
+                    <p class="message-text">Hello! I'm your SwasthyaSetu health assistant. How can I help you today? You can ask me about symptoms, home remedies, or general health information.</p>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <div class="input-group">
+                <textarea class="chat-input" id="chatInput" placeholder="Type your message here..." rows="1"></textarea>
+                <button class="mic-button" id="micButton">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            <button class="send-button" id="sendButton">Send</button>
+            
+            <!-- Quick Replies -->
+            <div class="quick-replies">
+                <div class="quick-reply" data-message="I have a headache">I have a headache</div>
+                <div class="quick-reply" data-message="What to eat for fever?">What to eat for fever?</div>
+                <div class="quick-reply" data-message="Home remedies for cough">Home remedies for cough</div>
+                <div class="quick-reply" data-message="Find nearby hospitals">Find nearby hospitals</div>
+                <div class="quick-reply" data-message="Connect with a doctor">Connect with a doctor</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Options -->
+    <div class="chat-options" id="chatOptions">
+        <div class="chat-option" id="clearChat">
+            <i class="fas fa-trash-alt"></i>
+            <span class="chat-option-text">Clear Chat</span>
+        </div>
+        <div class="chat-option" id="emailChat">
+            <i class="fas fa-envelope"></i>
+            <span class="chat-option-text">Email Chat</span>
+        </div>
+        <div class="chat-option" id="helpOption">
+            <i class="fas fa-question-circle"></i>
+            <span class="chat-option-text">Help</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const micButton = document.getElementById('micButton');
+            const closeChat = document.getElementById('closeChat');
+            const languageSelector = document.getElementById('languageSelector');
+            const quickReplies = document.querySelectorAll('.quick-reply');
+            const chatOptions = document.getElementById('chatOptions');
+            const clearChat = document.getElementById('clearChat');
+            const emailChat = document.getElementById('emailChat');
+            const helpOption = document.getElementById('helpOption');
+            
+            // State variables
+            let isRecording = false;
+            let currentLanguage = 'en';
+            
+            // Bot responses based on language
+            const botResponses = {
+                en: {
+                    headache: "I'm sorry to hear you have a headache. For mild headaches, try resting in a quiet, dark room. You can also apply a cold compress to your forehead. Stay hydrated and avoid bright lights. If your headache persists for more than a day or is severe, please consult a doctor.",
+                    fever: "For fever, it's important to stay hydrated. Drink plenty of fluids like water, herbal teas, and clear soups. Rest is crucial for recovery. You can try home remedies like tulsi leaves or coriander tea. If your temperature is above 102°F (39°C) or lasts more than three days, seek medical attention.",
+                    cough: "For cough, try drinking warm honey and lemon tea. Ginger tea can also help soothe your throat. Avoid cold foods and drinks. Steam inhalation with eucalyptus oil can provide relief. If your cough persists for more than a week or is accompanied by difficulty breathing, consult a doctor.",
+                    hospitals: "I can help you find nearby hospitals. Could you please share your current location? Alternatively, you can visit the 'Nearby Hospitals' section on our main website to see hospitals in your area.",
+                    doctor: "I can connect you with a doctor for a consultation. Would you like me to find available doctors in your area? Please let me know your location and the type of specialist you're looking for.",
+                    default: "I'm here to help with your health questions. You can ask me about symptoms, home remedies, or general health information. If you need immediate medical attention, please contact your local healthcare provider."
+                },
+                hi: {
+                    headache: "मुझे आपके सिरदर्द के बारे में खेद है। हल्के सिरदर्द के लिए, एक शांत, अंधेरे कमरे में आराम करने की कोशिश करें। आप अपने माथे पर ठंडे कपड़े भी लगा सकते हैं। हाइड्रेटेड रहें और चमकीली रोशनी से बचें। यदि आपका सिरदर्द एक दिन से अधिक समय तक बना रहे या गंभीर है, तो कृपया डॉक्टर से परामर्श करें।",
+                    fever: "बुखार के लिए, हाइड्रेटेड रहना महत्वपूर्ण है। पानी, जड़ी चाय और साफ सूप जैसे तरल पदार्थ पर्याप्त मात्रा में पिएं। रिकवरी के लिए आराम महत्वपूर्ण है। आप तुलसी के पत्ते या धनिया की चाय जैसे घरेलू उपचार आजमा सकते हैं। यदि आपका तापमान 102°F (39°C) से अधिक है या तीन दिनों से अधिक समय तक बना रहा है, तो चिकित्सा सहायता लें।",
+                    cough: "खांसी के लिए, गर्म शहद और नींबू की चाय पीने की कोशिश करें। अदरक की चाय भी आपके गले को शांत करने में मदद कर सकती है। ठंडे खाद्य पदार्थों और पेय पदार्थों से बचें। यूकेलिप्टस तेल के साथ भाप लेने से राहत मिल सकती है। यदि आपकी खांसी एक सप्ताह से अधिक समय तक बनी रहती है या सांस लेने में कठिनाई के साथ है, तो डॉक्टर से परामर्श करें।",
+                    hospitals: "मैं आपके आस-पास के अस्पताल ढूंढ़ने में आपकी मदद कर सकता हूं। क्या आप कृपया अपना वर्तमान स्थान साझा कर सकते हैं? वैकल्पिक रूप से, आप अपने क्षेत्र में अस्पताल देखने के लिए हमारी मुख्य वेबसाइट पर 'निकटतम अस्पताल' अनुभाग पर जा सकते हैं।",
+                    doctor: "मैं आपको परामर्श के लिए एक डॉक्टर से जोड़ सकता हूं। क्या आप चाहेंगे कि मैं आपके क्षेत्र में उपलब्ध डॉक्टरों को खोजूं? कृपया मुझे अपना स्थान और उस विशेषज्ञ के प्रकार बताएं जिसे आप ढूंढ रहे हैं।",
+                    default: "मैं आपके स्वास्थ्य प्रश्नों में मदद करने के लिए यहां हूं। आप मुझसे लक्षणों, घरेलू उपचारों, या सामान्य स्वास्थ्य जानकारी के बारे में पूछ सकते हैं। यदि आपको तत्काल चिकित्सा ध्यान की आवश्यकता है, तो कृपया अपने स्थानीय स्वास्थ्य सेवा प्रदाता से संपर्क करें।"
+                },
+                ta: {
+                    headache: "தலவலி இருப்பதற்கு எனக்கு வருத்தமாக உள்ளது. இலகுவான தலவலிக்கு, அமைதியான, இருண்ட அறையில் ஓய்வெடுக்க முயற்சிக்கவும். நீங்கள் உங்கள் நெற்றியில் குளிர்ந்த துணியையும் பயன்படுத்தலாம். நீர்ப்பெருக்கு கவனம் செலுத்துங்கள் மற்றும் பிரகாசமான ஒளியிலிருந்து விலகவும். உங்கள் தலவலி ஒரு நாளுக்கு மேல் நீடிக்குமானாலோ அல்லது கடுமையாக இருந்தாலோ, தயவுசெய்து மருத்துவரைக் கலந்து ஆலோசிக்கவும்.",
+                    fever: "காய்ச்சலுக்கு, நீர்ப்பெருக்கு இருப்பது முக்கியம். தண்ணீர், மூலிகை தேநீர் மற்றும் தெளிவான சூப்புகள் போன்ற திரவங்களை அதிக அளவில் குடிக்கவும். மீட்பைப் பெற ஓய்வு முக்கியம். துளசி இலைகள் அல்லது கொத்தமல்லி தேநீர் போன்ற வீட்டு வைத்தியங்களை நீங்கள் முயற்சிக்கலாம். உங்கள் வெப்பநிலை 102°F (39°C) க்கு மேல் இருந்தாலோ அல்லது மூன்று நாட்களுக்கு மேல் நீடித்திருந்தாலோ, மருத்துவ கவனிப்பைத் தேடுங்கள்.",
+                    cough: "இருமலுக்கு, வெந்ததேன் மற்றும் எலுமிச்சை தேநீர் குடிக்க முயற்சிக்கவும். இஞ்சி தேநீரும் உங்கள் தொண்டையை சமாதானப்படுத்த உதவும். குளிர்ந்த உணவுகள் மற்றும் பானங்களைத் தவிர்க்கவும். யூகலிப்டஸ் எண்ணெயுடன் நீராவிப் பதனம் நிவாரணி அளிக்கும். உங்கள் இருமல் ஒரு வாரத்திற்கு மேல் நீடித்தாலோ அல்லது சுவாசிப்பதில் சிரமத்துடன் இருந்தாலோ, மருத்துவரைக் கலந்து ஆலோசிக்கவும்.",
+                    hospitals: "உங்களுக்கு அருகிலுள்ள மருத்துவமனைகளைக் கண்டுபிடிக்க நான் உதவலாம். தயவுசெய்து உங்கள் தற்போதைய இருப்பிடத்தைப் பகிர்ந்து கொள்ள முடியுமா? மாற்றாக, உங்கள் பகுதியில் உள்ள மருத்துவமனைகளைப் பார்க்க நாங்களின் முக்கிய இணையதளத்தில் 'அருகிலுள்ள மருத்துவமனைகள்' பகுதிக்குச் செல்லலாம்.",
+                    doctor: "ஆலோசனைக்கு மருத்துவருடன் இணைக்க நான் உதவலாம். உங்கள் பகுதியில் கிடைக்கும் மருத்துவர்களைக் கண்டுபிடிக்க என்னை விரும்புகிறீர்களா? தயவுசெய்து உங்கள் இருப்பிடத்தையும் நீங்கள் தேடும் நிபுணத்துவ வகையையும் எனக்குத் தெரிவிக்கவும்.",
+                    default: "உங்கள் சுகாதார கேள்விகளுக்கு உதவ நான் இங்கே இருக்கிறேன். நீங்கள் என்னிடம் அறிகுறிகள், வீட்டு வைத்தியங்கள் அல்லது பொது சுகாதார தகவல்கள் பற்றி கேட்கலாம். உங்களுக்கு உடனடி மருத்துவ கவனிப்பு தேவைப்பட்டால், தயவுசெய்து உங்கள் உள்ளூர் சுகாதார சேவை வழங்குநரைத் தொடர்பு கொள்ளுங்கள்."
+                },
+                te: {
+                    headache: "మీకు తలనొప్పి ఉన్నందుకు నాకు చింత ఉంది. తేలిక తలనొప్పి కోసం, నిశబ్దమైన, చీకటి గదిలో విశ్రాంతి తీసుకోండి. మీరు మీ నుదుటిపై చల్లని గుడ్డను కూడా ఉంచవచ్చు. హైడ్రేట్‌గా ఉండండి మరియు ప్రకాశవంతమైన కాంతి నుండి దూరంగా ఉండండి. మీ తలనొప్పి ఒక రోజుకు పైగా ఉంటే లేదా తీవ్రంగా ఉంటే, దయచేసి వైద్యుని సంప్రదించండి.",
+                    fever: "జ్వరం కోసం, హైడ్రేటెడ్‌గా ఉండటం ముఖ్యం. నీరు, మూలికా టీ మరియు స్పష్టమైన సూప్‌లు వంటి ద్రవాలను మోతాదు తాగండి. రికవరీ కోసం విశ్రాంతి చాలా అవసరం. మీరు తులసి ఆకులు లేదా ధనియా టీ వంటి హోమ్ రెమెడీలను ప్రయత్నించవచ్చు. మీ ఉష్ణోగ్రత 102°F (39°C) కంటే ఎక్కువగా ఉంటే లేదా మూడు రోజుల పాటు ఉంటే, వైద్య సహాయం కోసం వెళ్ళండి.",
+                    cough: "దగ్గు కోసం, వేడి తేనె మరియు నిమ్మడి టీ తాగడానికి ప్రయత్నించండి. అల్లం టీ కూడా మీ గొంతును ప్రశాంతపరచడంలో సహాయపడుతుంది. చల్లని ఆహారాలు మరియు పానీయాలను నివారించండి. యూకలిప్టస్ నూనెతో స్టీమ్ ఇన్‌హలేషన్ ఉపశమనం ఇవ్వచ్చు. మీ దగ్గు ఒక వారం పాటు ఉంటే లేదా శ్వాస తీసుకోవడంలో ఇబ్బంధకంతో ఉంటే, వైద్యుని సంప్రదించండి.",
+                    hospitals: "మీకు దగ్గరలోని ఆస్పత్రులను కనుగొనడంలో నేను సహాయం చేయగలను. మీరు దయచేసి మీ ప్రస్తుత స్థానాన్ని పంచుకోగలరా? ప్రత్యామ్నాయంగా, మీ ప్రాంతంలోని ఆస్పత్రులను చూడటానికి మా ప్రధాన వెబ్‌సైట్‌లో 'దగ్గరలోని ఆస్పత్రులు' విభాగానికి వెళ్ళవచ్చు.",
+                    doctor: "సంప్రదింపు కోసం నేను మీను వైద్యునితో కలుపుతాను. మీరు మీ ప్రాంతంలో అందుబాటులో ఉన్న వైద్యులను కనుగొనాలని నాకు ఉందా? దయచేసి మీ స్థానాన్ని మరియు మీరు వెతుకుంటున్న నిపుణుడి రకాన్ని నాకు తెలియజేయండి.",
+                    default: "మీ ఆరోగ్య ప్రశ్నలకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను. మీరు నాతో లక్షణాలు, హోమ్ రెమెడీలు లేదా సాధారణ ఆరోగ్య సమాచారం గురించి అడగవచ్చు. మీకు తక్షణ వైద్య సంరక్షణ అవసరమైతే, దయచేసి మీ స్థానిక ఆరోగ్య సేవా ప్రొవైడర్‌ని సంప్రదించండి."
+                },
+                bn: {
+                    headache: "আপনার মাথাব্যথা হওয়ায় আমি দুঃখিত। হালকা মাথাব্যথার জন্য, একটি শান্ত, অন্ধকার ঘরে বিশ্রাম নেওয়ার চেষ্টা করুন। আপনি আপনার কপালে একটি ঠান্ডা কাপড়ও প্রয়োগ করতে পারেন। হাইড্রেটেড থাকুন এবং উজ্জ্বল আলো এড়িয়ে চলুন। যদি আপনার মাথাব্যথা একদিনের বেশি স্থায়ী হয় বা গুরুতর হয়, অনুগ্রহ করে একজন ডাক্তারের সাথে পরামর্শ করুন।",
+                    fever: "জ্বরের জন্য, হাইড্রেটেড থাকা গুরুত্বপূর্ণ। পানি, ভেষজ চা এবং পরিষ্কার স্যুপের মতো তরল প্রচুর পরিমাণে পান করুন। পুনরুদ্ধারের জন্য বিশ্রাম অত্যন্ত গুরুত্বপূর্ণ। আপনি তুলসী পাতা বা ধনিয়া চায়ের মতো ঘরোয়া প্রতিকার চেষ্টা করতে পারেন। যদি আপনার তাপমাত্রা 102°F (39°C) এর বেশি হয় বা তিন দিনের বেশি স্থায়ী হয়, তাহলে চিকিৎসা সহায়তা নিন।",
+                    cough: "কাশির জন্য, উষ্ণ মধু এবং লেবু চা পান করার চেষ্টা করুন। আদা চাও আপনার গলাকে শান্ত করতে সাহায্য করতে পারে। ঠান্ডা খাবার এবং পানীয় পদার্থ এড়িয়ে চলুন। ইউক্যালিপটাস তেল দিয়ে বাষ্প নেওয়া প্রশান্তি দিতে পারে। যদি আপনার কাশি এক সপ্তাহের বেশি স্থায়ী হয় বা শ্বাসকষ্টের সাথে থাকে, তাহলে একজন ডাক্তারের সাথে পরামর্শ করুন।",
+                    hospitals: "আমি আপনার কাছাকাছি হাসপাতাল খুঁজে পেতে আপনাকে সাহায্য করতে পারি। আপনি কি অনুগ্রহ করে আপনার বর্তমান অবস্থান শেয়ার করতে পারেন? বিকল্প হিসাবে, আপনি আপনার এলাকায় হাসপাতাল দেখতে আমাদের প্রধান ওয়েবসাইটে 'নিকটবর্তী হাসপাতাল' বিভাগে যেতে পারেন।",
+                    doctor: "আমি পরামর্শের জন্য আপনাকে একজন ডাক্তারের সাথে সংযুক্ত করতে পারি। আপনি কি চান আমি আপনার এলাকায় উপলব্ধ ডাক্তারদের খুঁজে বের করি? অনুগ্রহ করে আমাকে আপনার অবস্থান এবং আপনি যে বিশেষজ্ঞকে খুঁজছেন তার ধরন জানান।",
+                    default: "আমি আপনার স্বাস্থ্য প্রশ্নের উত্তর দিতে এখানে আছি। আপনি আমাকে লক্ষণ, ঘরোয়া প্রতিকার বা সাধারণ স্বাস্থ্য তথ্য সম্পর্কে জিজ্ঞাসা করতে পারেন। আপনার যদি তাত্ক্ষণিক চিকিৎসা সহায়তার প্রয়োজন হয়, অনুগ্রহ করে আপনার স্থানীয় স্বাস্থ্যসেবা প্রদানকারীর সাথে যোগাযোগ করুন।"
+                },
+                mr: {
+                    headache: "तुम्हाला डोके दुखत असल्याबद्दल मला दुःख आहे. हलक्या डोकेदुखीसाठी, एका शांत, अंधार खोलीतील विश्रांती घ्या. तुम्ही तुमच्या भुवईवर थंड कापड देखील लावू शकता. हायड्रेटेड रहा आणि तेजस्वी प्रकाशापासून दूर राहा. जर तुमचे डोकेदुखी एका दिवसापेक्षा जास्त काळ टिकून राहिले किंवा गंभीर असल्यास, कृपया डॉक्टरांशी सल्ला करा.",
+                    fever: "तापासाठी, हायड्रेटेड राहणे महत्त्वाचे आहे. पाणी, औषधी चहा आणि स्पष्ट सूप यांसारखे द्रव पदार्थ भरपूर प्रमाणात प्या. रिकव्हरीसाठी विश्रांती अत्यंत महत्त्वाची आहे. तुम्ही तुळशी पाने किंवा धनिया चहा यांसारखे घरगुती उपचार वापरू शकता. जर तुमचे तापमान 102°F (39°C) पेक्षा जास्त असेल किंवा तीन दिवसांपेक्षा जास्त काळ टिकून राहिल्यास, वैद्यकीय मदत घ्या.",
+                    cough: "खोकल्यासाठी, उष्ण मध आणि लिंबू चहा प्यायचा प्रयत्न करा. आले चहाही तुमचे घश शांत करण्यास मदत करू शकतो. थंड अन्न आणि पेय पदार्थ टाळा. युकॅलिप्टस तेलाने वाफा घेणे आराम देऊ शकते. जर तुमची खोकली एका आठवड्यापेक्षा जास्त काळ टिकून राहिली किंवा श्वासोश्वास घेण्यास त्रास होत असेल, तर डॉक्टरांशी सल्ला करा.",
+                    hospitals: "मी तुमच्या जवळच्या रुग्णालये शोधण्यासाठी तुम्हाला मदत करू शकतो. तुम्ही कृपया तुमचे सध्याचे स्थान शेअर करू शकता का? पर्यायाने, तुमच्या क्षेत्रातील रुग्णालये पाहण्यासाठी आमच्या मुख्य वेबसाइटवर 'जवळची रुग्णालये' विभागात जा.",
+                    doctor: "सल्ल्यासाठी मी तुम्हाला डॉक्टरांशी जोडू शकतो. तुम्हाला तुमच्या क्षेत्रात उपलब्ध डॉक्टर शोधायचे आहे का? कृपया मला तुमचे स्थान आणि तुम्ही ज्या तज्ञाचा शोध घेत आहात ते सांगा.",
+                    default: "तुमच्या आरोग्य प्रश्नांची उत्तरे देण्यासाठी मी इथे आहे. तुम्ही मला लक्षणे, घरगुती उपचार किंवा सामान्य आरोग्य माहितीविषयी विचारू शकता. तुम्हाला तात्काळ वैद्यकीय काळजी आवश्यक असल्यास, कृपया तुमच्या स्थानिक आरोग्य सेवा प्रदात्याशी संपर्क साधा."
+                }
+            };
+            
+            // Function to add a message to the chat
+            function addMessage(text, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user' : 'bot');
+                
+                const messageContent = document.createElement('div');
+                messageContent.classList.add('message-content');
+                
+                const messageText = document.createElement('p');
+                messageText.classList.add('message-text');
+                messageText.textContent = text;
+                
+                const messageTime = document.createElement('div');
+                messageTime.classList.add('message-time');
+                messageTime.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messageContent.appendChild(messageText);
+                messageContent.appendChild(messageTime);
+                messageDiv.appendChild(messageContent);
+                
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to show typing indicator
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('typing-indicator');
+                typingDiv.id = 'typingIndicator';
+                
+                for (let i = 0; i < 3; i++) {
+                    const span = document.createElement('span');
+                    typingDiv.appendChild(span);
+                }
+                
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to remove typing indicator
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+            
+            // Function to get bot response
+            function getBotResponse(userMessage) {
+                const message = userMessage.toLowerCase();
+                const responses = botResponses[currentLanguage];
+                
+                if (message.includes('headache')) {
+                    return responses.headache;
+                } else if (message.includes('fever') || message.includes('temperature')) {
+                    return responses.fever;
+                } else if (message.includes('cough')) {
+                    return responses.cough;
+                } else if (message.includes('hospital') || message.includes('nearby')) {
+                    return responses.hospitals;
+                } else if (message.includes('doctor') || message.includes('physician')) {
+                    return responses.doctor;
+                } else {
+                    return responses.default;
+                }
+            }
+            
+            // Function to handle sending a message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message
+                addMessage(message, true);
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Disable send button temporarily
+                sendButton.disabled = true;
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Simulate bot response after delay
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    
+                    // Get bot response
+                    const botResponse = getBotResponse(message);
+                    
+                    // Add bot message
+                    addMessage(botResponse);
+                    
+                    // If user asked for a doctor, show doctor card
+                    if (message.toLowerCase().includes('doctor') || message.toLowerCase().includes('physician')) {
+                        showDoctorCard();
+                    }
+                    
+                    // Re-enable send button
+                    sendButton.disabled = false;
+                    
+                    // Focus back on input
+                    chatInput.focus();
+                }, 1500);
+            }
+            
+            // Function to show doctor card
+            function showDoctorCard() {
+                const doctorCard = document.createElement('div');
+                doctorCard.classList.add('doctor-card');
+                
+                doctorCard.innerHTML = `
+                    <img src="https://i.imgur.com/1ZqZcFj.jpg" alt="Dr. Rajesh Sharma" class="doctor-image">
+                    <div class="doctor-info">
+                        <div class="doctor-name">Dr. Rajesh Sharma</div>
+                        <div class="doctor-specialty">General Medicine</div>
+                        <div class="doctor-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            4.5 (128 reviews)
+                        </div>
+                    </div>
+                    <button class="connect-button">Connect Now</button>
+                `;
+                
+                chatMessages.appendChild(doctorCard);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Add event listener to connect button
+                const connectButton = doctorCard.querySelector('.connect-button');
+                connectButton.addEventListener('click', function() {
+                    addMessage("I'd like to connect with Dr. Rajesh Sharma.", true);
+                    
+                    showTypingIndicator();
+                    
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addMessage("I'm connecting you with Dr. Rajesh Sharma. Please wait while we set up the consultation. You will receive a notification shortly with further instructions.");
+                    }, 1500);
+                });
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Auto-resize textarea
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+            
+            // Mic button functionality
+            micButton.addEventListener('click', function() {
+                if (!isRecording) {
+                    // Start recording
+                    this.classList.add('recording');
+                    this.innerHTML = '<i class="fas fa-stop"></i>';
+                    isRecording = true;
+                    
+                    // Simulate voice recording
+                    setTimeout(() => {
+                        this.classList.remove('recording');
+                        this.innerHTML = '<i class="fas fa-microphone"></i>';
+                        isRecording = false;
+                        
+                        // Simulate voice input
+                        chatInput.value = "I have a headache and fever for the past two days.";
+                        sendMessage();
+                    }, 3000);
+                } else {
+                    // Stop recording
+                    this.classList.remove('recording');
+                    this.innerHTML = '<i class="fas fa-microphone"></i>';
+                    isRecording = false;
+                }
+            });
+            
+            // Close chat functionality
+            closeChat.addEventListener('click', function() {
+                if (confirm('Are you sure you want to close the chat?')) {
+                    // In a real application, this would close the chat window
+                    // For demo purposes, we'll redirect to the main page
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Language selector functionality
+            languageSelector.addEventListener('change', function() {
+                currentLanguage = this.value;
+                addMessage(`Language changed to ${this.options[this.selectedIndex].text}`);
+            });
+            
+            // Quick reply functionality
+            quickReplies.forEach(reply => {
+                reply.addEventListener('click', function() {
+                    const message = this.getAttribute('data-message');
+                    chatInput.value = message;
+                    sendMessage();
+                });
+            });
+            
+            // Chat options functionality
+            chatOptions.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Clear chat functionality
+            clearChat.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear the chat history?')) {
+                    // Clear all messages except the welcome message
+                    const messages = chatMessages.querySelectorAll('.message');
+                    messages.forEach(message => {
+                        if (!message.querySelector('.message-text').textContent.includes('Hello! I\'m your SwasthyaSetu health assistant.')) {
+                            message.remove();
+                        }
+                    });
+                    
+                    // Remove any doctor cards
+                    const doctorCards = chatMessages.querySelectorAll('.doctor-card');
+                    doctorCards.forEach(card => card.remove());
+                    
+                    // Hide chat options
+                    chatOptions.classList.remove('show');
+                }
+            });
+            
+            // Email chat functionality
+            emailChat.addEventListener('click', function() {
+                // In a real application, this would email the chat transcript
+                alert('Chat transcript will be emailed to you. In a real application, you would be prompted to enter your email address.');
+                chatOptions.classList.remove('show');
+            });
+            
+            // Help functionality
+            helpOption.addEventListener('click', function() {
+                addMessage("How can I use this chatbot?");
+                
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage("You can use this chatbot by typing your health questions or symptoms in the input box below. You can also click the microphone button to speak your question. The chatbot will provide information about symptoms, home remedies, and can connect you with doctors if needed. You can also use the quick reply buttons for common questions.");
+                }, 1500);
+                
+                chatOptions.classList.remove('show');
+            });
+            
+            // Show/hide chat options on right-click
+            chatMessages.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                chatOptions.classList.toggle('show');
+                
+                // Position chat options near the mouse
+                chatOptions.style.left = e.pageX + 'px';
+                chatOptions.style.top = e.pageY + 'px';
+            });
+            
+            // Hide chat options when clicking elsewhere
+            document.addEventListener('click', function() {
+                chatOptions.classList.remove('show');
+            });
+            
+            // Focus on input when page loads
+            chatInput.focus();
+        });
+    </script>
+</body>
+</html>
