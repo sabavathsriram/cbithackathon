@@ -1,0 +1,206 @@
+disease,workout
+Fungal infection,Light stretching
+Fungal infection,Walking
+Fungal infection,Yoga
+Fungal infection,Avoid overexertion
+Fungal infection,Rest
+Allergy,Breathing exercises
+Allergy,Light cardio
+Allergy,Yoga
+Allergy,Avoid pollen exposure
+Allergy,Rest
+GERD,Gentle yoga
+GERD,Walking
+GERD,Avoid heavy lifting
+GERD,Posture exercises
+GERD,Rest
+Chronic cholestasis,Light walking
+Chronic cholestasis,Gentle stretching
+Chronic cholestasis,Avoid strenuous activity
+Chronic cholestasis,Rest
+Chronic cholestasis,Consult doctor
+Drug Reaction,Rest
+Drug Reaction,Light stretching
+Drug Reaction,Avoid overexertion
+Drug Reaction,Hydration exercises
+Drug Reaction,Consult doctor
+Peptic ulcer disease,Gentle walking
+Peptic ulcer disease,Yoga
+Peptic ulcer disease,Avoid heavy lifting
+Peptic ulcer disease,Stress-relief exercises
+Peptic ulcer disease,Rest
+AIDS,Light cardio
+AIDS,Strength training
+AIDS,Flexibility exercises
+AIDS,Rest
+AIDS,Consult doctor
+Diabetes,Walking
+Diabetes,Strength training
+Diabetes,Yoga
+Diabetes,Aerobic exercise
+Diabetes,Rest
+Gastroenteritis,Rest
+Gastroenteritis,Light stretching
+Gastroenteritis,Avoid strenuous activity
+Gastroenteritis,Hydration focus
+Gastroenteritis,Consult doctor
+Bronchial Asthma,Breathing exercises
+Bronchial Asthma,Light cardio
+Bronchial Asthma,Yoga
+Bronchial Asthma,Avoid triggers
+Bronchial Asthma,Rest
+Hypertension,Walking
+Hypertension,Swimming
+Hypertension,Yoga
+Hypertension,Aerobic exercise
+Hypertension,Rest
+Migraine,Gentle stretching
+Migraine,Yoga
+Migraine,Avoid intense workouts
+Migraine,Rest
+Migraine,Stress management
+Cervical spondylosis,Neck exercises
+Cervical spondylosis,Gentle stretching
+Cervical spondylosis,Posture training
+Cervical spondylosis,Rest
+Cervical spondylosis,Physical therapy
+Paralysis (brain hemorrhage),Physical therapy
+Paralysis (brain hemorrhage),Gentle movement
+Paralysis (brain hemorrhage),Rehabilitation
+Paralysis (brain hemorrhage),Rest
+Paralysis (brain hemorrhage),Consult doctor
+Jaundice,Rest
+Jaundice,Light walking
+Jaundice,Avoid strenuous activity
+Jaundice,Hydration focus
+Jaundice,Consult doctor
+Malaria,Rest
+Malaria,Light stretching
+Malaria,Avoid overexertion
+Malaria,Hydration focus
+Malaria,Consult doctor
+Chicken pox,Rest
+Chicken pox,Light stretching
+Chicken pox,Avoid scratching
+Chicken pox,Hydration focus
+Chicken pox,Consult doctor
+Dengue,Rest
+Dengue,Light walking
+Dengue,Avoid overexertion
+Dengue,Hydration focus
+Dengue,Consult doctor
+Typhoid,Rest
+Typhoid,Light stretching
+Typhoid,Avoid strenuous activity
+Typhoid,Hydration focus
+Typhoid,Consult doctor
+hepatitis A,Rest
+hepatitis A,Light walking
+hepatitis A,Avoid strenuous activity
+hepatitis A,Hydration focus
+hepatitis A,Consult doctor
+Hepatitis B,Rest
+Hepatitis B,Light stretching
+Hepatitis B,Avoid overexertion
+Hepatitis B,Hydration focus
+Hepatitis B,Consult doctor
+Hepatitis C,Rest
+Hepatitis C,Light walking
+Hepatitis C,Avoid strenuous activity
+Hepatitis C,Hydration focus
+Hepatitis C,Consult doctor
+Hepatitis D,Rest
+Hepatitis D,Light stretching
+Hepatitis D,Avoid overexertion
+Hepatitis D,Hydration focus
+Hepatitis D,Consult doctor
+Hepatitis E,Rest
+Hepatitis E,Light walking
+Hepatitis E,Avoid strenuous activity
+Hepatitis E,Hydration focus
+Hepatitis E,Consult doctor
+Alcoholic hepatitis,Rest
+Alcoholic hepatitis,Light stretching
+Alcoholic hepatitis,Avoid overexertion
+Alcoholic hepatitis,Hydration focus
+Alcoholic hepatitis,Consult doctor
+Tuberculosis,Light walking
+Tuberculosis,Breathing exercises
+Tuberculosis,Avoid overexertion
+Tuberculosis,Rest
+Tuberculosis,Consult doctor
+Common Cold,Rest
+Common Cold,Light stretching
+Common Cold,Avoid overexertion
+Common Cold,Hydration focus
+Common Cold,Consult doctor
+Pneumonia,Rest
+Pneumonia,Breathing exercises
+Pneumonia,Avoid strenuous activity
+Pneumonia,Hydration focus
+Pneumonia,Consult doctor
+Dimorphic hemmorhoids(piles),Gentle walking
+Dimorphic hemmorhoids(piles),Pelvic floor exercises
+Dimorphic hemmorhoids(piles),Avoid heavy lifting
+Dimorphic hemmorhoids(piles),Rest
+Dimorphic hemmorhoids(piles),Consult doctor
+Heart attack,Rest
+Heart attack,Light stretching
+Heart attack,Cardiac rehab
+Heart attack,Avoid overexertion
+Heart attack,Consult doctor
+Varicose veins,Leg exercises
+Varicose veins,Walking
+Varicose veins,Avoid standing long
+Varicose veins,Elevate legs
+Varicose veins,Consult doctor
+Hypothyroidism,Light cardio
+Hypothyroidism,Strength training
+Hypothyroidism,Yoga
+Hypothyroidism,Avoid overexertion
+Hypothyroidism,Consult doctor
+Hyperthyroidism,Light walking
+Hyperthyroidism,Gentle stretching
+Hyperthyroidism,Avoid intense workouts
+Hyperthyroidism,Rest
+Hyperthyroidism,Consult doctor
+Hypoglycemia,Light walking
+Hypoglycemia,Avoid overexertion
+Hypoglycemia,Monitor energy
+Hypoglycemia,Rest
+Hypoglycemia,Consult doctor
+Osteoarthristis,Gentle stretching
+Osteoarthristis,Low-impact exercise
+Osteoarthristis,Strength training
+Osteoarthristis,Rest
+Osteoarthristis,Consult doctor
+Arthritis,Gentle stretching
+Arthritis,Low-impact exercise
+Arthritis,Strength training
+Arthritis,Rest
+Arthritis,Consult doctor
+(vertigo) Paroymsal Positional Vertigo,Balance exercises
+(vertigo) Paroymsal Positional Vertigo,Gentle stretching
+(vertigo) Paroymsal Positional Vertigo,Avoid sudden movements
+(vertigo) Paroymsal Positional Vertigo,Rest
+(vertigo) Paroymsal Positional Vertigo,Consult doctor
+Acne,Light walking
+Acne,Yoga
+Acne,Avoid overexertion
+Acne,Hydration focus
+Acne,Consult doctor
+Urinary tract infection,Light stretching
+Urinary tract infection,Avoid overexertion
+Urinary tract infection,Hydration focus
+Urinary tract infection,Rest
+Urinary tract infection,Consult doctor
+Psoriasis,Gentle stretching
+Psoriasis,Yoga
+Psoriasis,Avoid overexertion
+Psoriasis,Stress management
+Psoriasis,Consult doctor
+Impetigo,Light stretching
+Impetigo,Rest affected area
+Impetigo,Avoid strenuous activity
+Impetigo,Hygiene-focused movement
+Impetigo,Consult doctor
